@@ -1,0 +1,745 @@
+1
+00:00:01,000 --> 00:00:15,000
+One of the most common complex applications that people are building using an llm is a system that can answer questions on top of or about a document.
+
+2
+00:00:15,000 --> 00:00:24,000
+So given a piece of text may be extracted from PDF file or from a webpage or from some company's intranet internal document collection,
+
+3
+00:00:24,000 --> 00:00:33,000
+can you use an llm to answer questions about the content of those documents to help users gain a deeper understanding and get access to the information that they need?
+
+4
+00:00:33,000 --> 00:00:39,000
+This is really powerful because it starts to combine these language models with data that they weren't originally trained on.
+
+5
+00:00:39,000 --> 00:00:42,000
+So it makes them much more flexible and adaptable to your use case.
+
+6
+00:00:42,000 --> 00:00:48,000
+It's also really exciting because we'll start to move beyond language models, prompts, and output parsers,
+
+7
+00:00:48,000 --> 00:00:54,000
+and start introducing some more of the key components of link chain, such as embedding models and vector stores.
+
+8
+00:00:54,000 --> 00:00:58,000
+As Andrew mentioned, this is one of the more popular chains that we've got, so I hope you're excited.
+
+9
+00:00:58,000 --> 00:01:03,000
+In fact, embeddings and vector stores are some of the most powerful modern techniques.
+
+10
+00:01:03,000 --> 00:01:08,000
+So if you have not seen them yet, they are very much worth learning about.
+
+11
+00:01:08,000 --> 00:01:10,000
+So with that, let's dive in.
+
+12
+00:01:10,000 --> 00:01:11,000
+Let's do it.
+
+13
+00:01:11,000 --> 00:01:16,000
+So we're going to start by importing the environment variables as we always do.
+
+14
+00:01:16,000 --> 00:01:20,000
+Now we're going to import some things that will help us when building this chain.
+
+15
+00:01:20,000 --> 00:01:22,000
+We're going to import the retrieval QA chain.
+
+16
+00:01:22,000 --> 00:01:24,000
+This will do retrieval over some documents.
+
+17
+00:01:24,000 --> 00:01:28,000
+We're going to import our favorite chat open AI language model.
+
+18
+00:01:28,000 --> 00:01:29,000
+We're going to import a document loader.
+
+19
+00:01:29,000 --> 00:01:34,000
+This is going to be used to load some proprietary data that we're going to combine with the language model.
+
+20
+00:01:34,000 --> 00:01:36,000
+In this case, it's going to be in a CSV.
+
+21
+00:01:36,000 --> 00:01:39,000
+So we're going to import the CSV loader.
+
+22
+00:01:39,000 --> 00:01:41,000
+Finally, we're going to import a vector store.
+
+23
+00:01:41,000 --> 00:01:45,000
+There are many different types of vector stores, and we'll cover what exactly these are later on.
+
+24
+00:01:45,000 --> 00:01:49,000
+But we're going to get started with the Dock Array in-memory search vector store.
+
+25
+00:01:49,000 --> 00:01:51,000
+This is really nice because it's an in-memory vector store,
+
+26
+00:01:51,000 --> 00:01:55,000
+and it doesn't require connecting to an external database of any kind,
+
+27
+00:01:55,000 --> 00:01:57,000
+so it makes it really easy to get started.
+
+28
+00:01:57,000 --> 00:01:59,000
+We're also going to import display and markdown,
+
+29
+00:01:59,000 --> 00:02:04,000
+two common utilities for displaying information in Jupyter Notebooks.
+
+30
+00:02:04,000 --> 00:02:10,000
+We've provided a CSV of outdoor clothing that we're going to use to combine with the language model.
+
+31
+00:02:10,000 --> 00:02:18,000
+Here we're going to initialize a loader, the CSV loader, with a path to this file.
+
+32
+00:02:18,000 --> 00:02:22,000
+We're next going to import an index, the vector store index creator.
+
+33
+00:02:22,000 --> 00:02:26,000
+This will help us create a vector store really easily.
+
+34
+00:02:26,000 --> 00:02:34,000
+As we can see below, it will only be a few lines of code to create this.
+
+35
+00:02:34,000 --> 00:02:37,000
+To create it, we're going to specify two things.
+
+36
+00:02:37,000 --> 00:02:40,000
+First, we're going to specify the vector store class.
+
+37
+00:02:40,000 --> 00:02:42,000
+As mentioned before, we're going to use this vector store,
+
+38
+00:02:42,000 --> 00:02:46,000
+as it's a particularly easy one to get started with.
+
+39
+00:02:46,000 --> 00:02:49,000
+After it's been created, we're then going to call from loaders,
+
+40
+00:02:49,000 --> 00:02:51,000
+which takes in a list of document loaders.
+
+41
+00:02:51,000 --> 00:02:58,000
+We've only got one loader that we really care about, so that's what we're passing in here.
+
+42
+00:02:58,000 --> 00:03:02,000
+It's now been created, and we can start to ask questions about it.
+
+43
+00:03:02,000 --> 00:03:07,000
+Below we'll cover what exactly happened under the hood, so let's not worry about that for now.
+
+44
+00:03:07,000 --> 00:03:09,000
+Here we'll start with a query.
+
+45
+00:03:09,000 --> 00:03:17,000
+We'll then create a response using index query and pass in this query.
+
+46
+00:03:17,000 --> 00:03:21,000
+Again, we'll cover what's going on under the hood down below.
+
+47
+00:03:21,000 --> 00:03:30,000
+For now, we'll just wait for it to respond.
+
+48
+00:03:30,000 --> 00:03:34,000
+After it finishes, we can now take a look at what exactly was returned.
+
+49
+00:03:34,000 --> 00:03:41,000
+We've gotten back a table in Markdown with names and descriptions for all shirts with sun protection.
+
+50
+00:03:41,000 --> 00:03:45,000
+We've also got a nice little summary that the language model has provided us.
+
+51
+00:03:45,000 --> 00:03:48,000
+So we've gone over how to do question answering over your documents,
+
+52
+00:03:48,000 --> 00:03:52,000
+but what exactly is going on underneath the hood?
+
+53
+00:03:52,000 --> 00:03:54,000
+First, let's think about the general idea.
+
+54
+00:03:54,000 --> 00:03:58,000
+We want to use language models and combine it with a lot of our documents,
+
+55
+00:03:58,000 --> 00:04:03,000
+but there's a key issue. Language models can only inspect a few thousand words at a time.
+
+56
+00:04:03,000 --> 00:04:10,000
+So if we have really large documents, how can we get the language model to answer questions about everything that's in there?
+
+57
+00:04:10,000 --> 00:04:14,000
+This is where embeddings and vector stores come into play.
+
+58
+00:04:14,000 --> 00:04:17,000
+First, let's talk about embeddings.
+
+59
+00:04:17,000 --> 00:04:21,000
+Embeddings create numerical representations for pieces of text.
+
+60
+00:04:21,000 --> 00:04:27,000
+This numerical representation captures the semantic meaning of the piece of text that it's been run over.
+
+61
+00:04:27,000 --> 00:04:31,000
+Pieces of text with similar content will have similar vectors.
+
+62
+00:04:31,000 --> 00:04:35,000
+This lets us compare pieces of text in the vector space.
+
+63
+00:04:35,000 --> 00:04:38,000
+In the example below, we can see that we have three sentences.
+
+64
+00:04:38,000 --> 00:04:43,000
+The first two are about pets, while the third is about a car.
+
+65
+00:04:43,000 --> 00:04:46,000
+If we look at the representation in the numeric space,
+
+66
+00:04:46,000 --> 00:04:54,000
+we can see that when we compare the two vectors on the pieces of text corresponding to the sentences about pets, they're very similar.
+
+67
+00:04:54,000 --> 00:04:58,000
+While if we compare it to the one that talks about a car, they're not similar at all.
+
+68
+00:04:58,000 --> 00:05:02,000
+This will let us easily figure out which pieces of text are like each other,
+
+69
+00:05:02,000 --> 00:05:10,000
+which will be very useful as we think about which pieces of text we want to include when passing to the language model to answer a question.
+
+70
+00:05:10,000 --> 00:05:13,000
+The next component that we're going to cover is the vector database.
+
+71
+00:05:13,000 --> 00:05:18,000
+A vector database is a way to store these vector representations that we created in the previous step.
+
+72
+00:05:18,000 --> 00:05:24,000
+The way that we create this vector database is we populate it with chunks of text coming from incoming documents.
+
+73
+00:05:24,000 --> 00:05:28,000
+When we get a big incoming document, we're first going to break it up into smaller chunks.
+
+74
+00:05:28,000 --> 00:05:33,000
+This helps create pieces of text that are smaller than the original document,
+
+75
+00:05:33,000 --> 00:05:37,000
+which is useful because we may not be able to pass the whole document to the language model.
+
+76
+00:05:37,000 --> 00:05:43,000
+So we want to create these small chunks so we can only pass the most relevant ones to the language model.
+
+77
+00:05:43,000 --> 00:05:48,000
+We then create an embedding for each of these chunks, and then we store those in a vector database.
+
+78
+00:05:48,000 --> 00:05:51,000
+That's what happens when we create the index.
+
+79
+00:05:51,000 --> 00:05:58,000
+Now that we've got this index, we can use it during runtime to find the pieces of text most relevant to an incoming query.
+
+80
+00:05:58,000 --> 00:06:02,000
+When a query comes in, we first create an embedding for that query.
+
+81
+00:06:02,000 --> 00:06:07,000
+We then compare it to all the vectors in the vector database, and we pick the n most similar.
+
+82
+00:06:07,000 --> 00:06:14,000
+These are then returned, and we can pass those in the prompt to the language model to get back a final answer.
+
+83
+00:06:14,000 --> 00:06:17,000
+So above, we created this chain and only a few lines of code.
+
+84
+00:06:17,000 --> 00:06:19,000
+That's great for getting started quickly.
+
+85
+00:06:19,000 --> 00:06:25,000
+Well, let's now do it a bit more step by step and understand what exactly is going on under the hood.
+
+86
+00:06:25,000 --> 00:06:27,000
+The first step is similar to above.
+
+87
+00:06:27,000 --> 00:06:36,000
+We're going to create a document loader, loading from that CSV with all the descriptions of the products that we want to do question answering over.
+
+88
+00:06:36,000 --> 00:06:41,000
+We can then load documents from this document loader.
+
+89
+00:06:41,000 --> 00:06:50,000
+If we look at the individual documents, we can see that each document corresponds to one of the products in the CSV.
+
+90
+00:06:50,000 --> 00:06:53,000
+Previously, we talked about creating chunks.
+
+91
+00:06:53,000 --> 00:07:01,000
+Because these documents are already so small, we actually don't need to do any chunking here, and so we can create embeddings directly.
+
+92
+00:07:01,000 --> 00:07:05,000
+To create embeddings, we're going to use OpenAI's embedding class.
+
+93
+00:07:05,000 --> 00:07:08,000
+We can import it and initialize it here.
+
+94
+00:07:08,000 --> 00:07:21,000
+If we want to see what these embeddings do, we can actually take a look at what happens when we embed a particular piece of text.
+
+95
+00:07:21,000 --> 00:07:26,000
+Let's use the embed query method on the embeddings object to create embeddings for a particular piece of text.
+
+96
+00:07:26,000 --> 00:07:31,000
+In this case, the sentence, hi, my name is Harrison.
+
+97
+00:07:31,000 --> 00:07:41,000
+If we take a look at this embedding, we can see that there are over a thousand different elements.
+
+98
+00:07:41,000 --> 00:07:44,000
+Each of these elements is a different numerical value.
+
+99
+00:07:44,000 --> 00:07:51,000
+Combined, this creates the overall numerical representation for this piece of text.
+
+100
+00:07:51,000 --> 00:07:58,000
+We want to create embeddings for all the pieces of text that we just loaded, and then we also want to store them in a vector store.
+
+101
+00:07:58,000 --> 00:08:03,000
+We can do that by using the from documents method on the vector store.
+
+102
+00:08:03,000 --> 00:08:12,000
+This method takes in a list of documents, an embedding object, and then we'll create an overall vector store.
+
+103
+00:08:12,000 --> 00:08:18,000
+We can now use this vector store to find pieces of text similar to an incoming query.
+
+104
+00:08:18,000 --> 00:08:23,000
+So let's look at the query, please suggest a shirt with sunblocking.
+
+105
+00:08:23,000 --> 00:08:36,000
+If we use the similarity search method on the vector store and pass in a query, we will get back a list of documents.
+
+106
+00:08:36,000 --> 00:08:48,000
+We can see that it returns four documents, and if we look at the first one, we can see that it is indeed a shirt about sunblocking.
+
+107
+00:08:48,000 --> 00:08:52,000
+So how do we use this to do question answering over our own documents?
+
+108
+00:08:52,000 --> 00:08:57,000
+First, we need to create a retriever from this vector store.
+
+109
+00:08:57,000 --> 00:09:03,000
+A retriever is a generic interface that can be underpinned by any method that takes in a query and returns documents.
+
+110
+00:09:03,000 --> 00:09:11,000
+Vector stores and embeddings are one such method to do so, although there are plenty of different methods, some less advanced, some more advanced.
+
+111
+00:09:11,000 --> 00:09:20,000
+Next, because we want to do text generation and return a natural language response, we're going to import a language model and we're going to use chat open AI.
+
+112
+00:09:20,000 --> 00:09:28,000
+If we were doing this by hand, what we would do is we would combine the documents into a single piece of text.
+
+113
+00:09:28,000 --> 00:09:37,000
+So we'd do something like this, where we join all the page content in the documents into a variable.
+
+114
+00:09:37,000 --> 00:09:48,000
+And then we'd pass this variable or a variant on the question, like please list all your shirts with sun protection and a table with markdown and summarize each one into the language model.
+
+115
+00:09:48,000 --> 00:09:55,000
+And if we print out the response here, we can see that we get back a table exactly as we asked for.
+
+116
+00:09:55,000 --> 00:09:59,000
+All of those steps can be encapsulated with the LangChain chain.
+
+117
+00:09:59,000 --> 00:10:02,000
+So here we can create a retrieval QA chain.
+
+118
+00:10:02,000 --> 00:10:06,000
+This does retrieval and then does question answering over the retrieved documents.
+
+119
+00:10:06,000 --> 00:10:09,000
+To create such a chain, we'll pass in a few different things.
+
+120
+00:10:09,000 --> 00:10:12,000
+First, we'll pass in the language model.
+
+121
+00:10:12,000 --> 00:10:15,000
+This will be used for doing the text generation at the end.
+
+122
+00:10:15,000 --> 00:10:17,000
+Next, we'll pass in the chain type.
+
+123
+00:10:17,000 --> 00:10:18,000
+We're going to use stuff.
+
+124
+00:10:18,000 --> 00:10:25,000
+This is the simplest method as it just stuffs all the documents into context and makes one call to a language model.
+
+125
+00:10:25,000 --> 00:10:32,000
+There are a few other methods that you can use to do question answering that I'll maybe touch on at the end, but we're not going to look at in detail.
+
+126
+00:10:32,000 --> 00:10:34,000
+Third, we're going to pass in a retriever.
+
+127
+00:10:34,000 --> 00:10:38,000
+The retriever we created above is just an interface for fetching documents.
+
+128
+00:10:38,000 --> 00:10:41,000
+This will be used to fetch documents and pass it to the language model.
+
+129
+00:10:41,000 --> 00:10:46,000
+And then finally, we're going to set verbose equals to true.
+
+130
+00:10:46,000 --> 00:11:08,000
+Now we can create a query and we can run the chain on this query.
+
+131
+00:11:08,000 --> 00:11:14,000
+When we get the response, we can again display it using the display and markdown utilities.
+
+132
+00:11:14,000 --> 00:11:20,000
+You can pause the video here and try it out with a bunch of different queries.
+
+133
+00:11:20,000 --> 00:11:26,000
+So that's how you do it in detail, but remember that we can still do it pretty easily with just the one line that we had up above.
+
+134
+00:11:26,000 --> 00:11:30,000
+So these two things equate to the same result.
+
+135
+00:11:30,000 --> 00:11:32,000
+And that's part of the interesting stuff about LinkChain.
+
+136
+00:11:32,000 --> 00:11:38,000
+You can do it in one line or you can look at the individual things and break it down into five more detailed ones.
+
+137
+00:11:38,000 --> 00:11:44,000
+The five more detailed ones let you set more specifics about what exactly is going on, but the one-liner is easy to get started.
+
+138
+00:11:44,000 --> 00:11:48,000
+So up to you as to how you'd prefer to go forward.
+
+139
+00:11:48,000 --> 00:11:51,000
+We can also customize the index when we're creating it.
+
+140
+00:11:51,000 --> 00:11:55,000
+And so if you remember, when we created it by hand, we specified an embedding.
+
+141
+00:11:55,000 --> 00:11:57,000
+And we can specify an embedding here as well.
+
+142
+00:11:57,000 --> 00:12:01,000
+And so this will give us flexibility over how the embeddings themselves are created.
+
+143
+00:12:01,000 --> 00:12:06,000
+And we can also swap out the vector store here for a different type of vector store.
+
+144
+00:12:06,000 --> 00:12:15,000
+So there's the same level of customization that you did when you created it by hand that's also available when you create the index here.
+
+145
+00:12:15,000 --> 00:12:17,000
+We use the stuff method in this notebook.
+
+146
+00:12:17,000 --> 00:12:19,000
+The stuff method is really nice because it's pretty simple.
+
+147
+00:12:19,000 --> 00:12:25,000
+You just put all of it into one prompt and send that to the language model and get back one response.
+
+148
+00:12:25,000 --> 00:12:27,000
+So it's quite simple to understand what's going on.
+
+149
+00:12:27,000 --> 00:12:30,000
+It's quite cheap and it works pretty well.
+
+150
+00:12:30,000 --> 00:12:32,000
+But that doesn't always work okay.
+
+151
+00:12:32,000 --> 00:12:37,000
+So if you remember, when we fetched the documents in the notebook, we only got four documents back.
+
+152
+00:12:37,000 --> 00:12:39,000
+And they were relatively small.
+
+153
+00:12:39,000 --> 00:12:44,000
+But what if you wanted to do the same type of question answering over lots of different types of chunks?
+
+154
+00:12:44,000 --> 00:12:47,000
+Then there are a few different methods that we can use.
+
+155
+00:12:47,000 --> 00:12:48,000
+The first is map reduce.
+
+156
+00:12:48,000 --> 00:12:55,000
+This basically takes all the chunks, passes them along with the question to a language model, gets back a response,
+
+157
+00:12:55,000 --> 00:13:02,000
+and then uses another language model call to summarize all of the individual responses into a final answer.
+
+158
+00:13:02,000 --> 00:13:06,000
+This is really powerful because it can operate over any number of documents.
+
+159
+00:13:06,000 --> 00:13:11,000
+And it's also really powerful because you can do the individual questions in parallel.
+
+160
+00:13:11,000 --> 00:13:13,000
+But it does take a lot more calls.
+
+161
+00:13:13,000 --> 00:13:19,000
+And it does treat all the documents as independent, which may not always be the most desired thing.
+
+162
+00:13:19,000 --> 00:13:24,000
+Refine, which is another method, is again used to loop over many documents.
+
+163
+00:13:24,000 --> 00:13:25,000
+But it actually does it iteratively.
+
+164
+00:13:25,000 --> 00:13:28,000
+It builds upon the answer from the previous document.
+
+165
+00:13:28,000 --> 00:13:33,000
+So this is really good for combining information and building up an answer over time.
+
+166
+00:13:33,000 --> 00:13:36,000
+It will generally lead to longer answers.
+
+167
+00:13:36,000 --> 00:13:39,000
+And it's also not as fast because now the calls aren't independent.
+
+168
+00:13:39,000 --> 00:13:43,000
+They depend on the result of previous calls.
+
+169
+00:13:43,000 --> 00:13:49,000
+This means that it often takes a good while longer and takes just as many calls as map reduce, basically.
+
+170
+00:13:49,000 --> 00:13:57,000
+Map re-rank is a pretty interesting and a bit more experimental one where you do a single call to the language model for each document.
+
+171
+00:13:57,000 --> 00:14:00,000
+And you also ask it to return a score.
+
+172
+00:14:00,000 --> 00:14:02,000
+And then you select the highest score.
+
+173
+00:14:02,000 --> 00:14:06,000
+This relies on the language model to know what the score should be.
+
+174
+00:14:06,000 --> 00:14:12,000
+So you often have to tell it, hey, it should be a high score if it's relevant to the document and really refine the instructions there.
+
+175
+00:14:12,000 --> 00:14:15,000
+Similar to map reduce, all the calls are independent.
+
+176
+00:14:15,000 --> 00:14:16,000
+So you can batch them.
+
+177
+00:14:16,000 --> 00:14:18,000
+And it's relatively fast.
+
+178
+00:14:18,000 --> 00:14:20,000
+But again, you're making a bunch of language model calls.
+
+179
+00:14:20,000 --> 00:14:22,000
+So it will be a bit more expensive.
+
+180
+00:14:22,000 --> 00:14:29,000
+The most common of these methods is the stuff method, which we used in the notebook to combine it all into one document.
+
+181
+00:14:29,000 --> 00:14:35,000
+The second most common is the map reduce method, which takes these chunks and sends them to the language model.
+
+182
+00:14:35,000 --> 00:14:42,000
+These methods here, stuff, map reduce, refine, and re-rank can also be used for lots of other chains besides just question answering.
+
+183
+00:14:42,000 --> 00:14:53,000
+For example, a really common use case of the map reduce chain is for summarization, where you have a really long document and you want to recursively summarize pieces of information in it.
+
+184
+00:14:53,000 --> 00:14:56,000
+That's it for question answering over documents.
+
+185
+00:14:56,000 --> 00:15:00,000
+As you may have noticed, there's a lot going on in the different chains that we have here.
+
+186
+00:15:00,000 --> 00:15:12,000
+And so in the next section, we'll cover ways to better understand what exactly is going on inside all of these chains.
+
+
