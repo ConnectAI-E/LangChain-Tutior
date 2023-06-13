@@ -9,19 +9,22 @@
 
 ## 介绍
 
-🥐 参考视频课程：
+🥐 参考视频课程：https://learn.deeplearning.ai/langchain
 
-🍔 中文字幕搬运：
+🍔 BiliBili：https://www.bilibili.com/video/BV1jh4y1X7cq
 
-🥪 实现语言：Python、Golang、NodeJs
+🥪 实现语言：Python、NodeJs
 
 🍗 语料语言：英文、中文
 
 ## 代码
-| 资料     | 语料                                                                                                                                                 |
-|:-------|:---------------------------------------------------------------------------------------------------------------------------------------------------|
-| 教学视频   | <a href="https://www.bilibili.com/video/BV1No4y1t7Zn">中✅</a>、<a href="https://learn.deeplearning.ai/chatgpt-prompt-eng/lesson/2/guidelines">英✅</a> |
-| Python | <a href="#">中❌</a>、<a href="./python/en/guidelines.ipynb">英✅</a>                                                                                   |
-| NodeJS | <a href="#">中❌</a>、<a href="./nodejs/en/readme.md">英✅</a>                                                                                                             
-| Golang | <a href="#">中❌</a>、<a href="./golang/en/guidelines.go">英✅</a>                                                                                      |
 
+> 欢迎大家PR！
+
+| 资料     | 语料                                                                                                                                                                                       |
+|:-------|:-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| 教学视频   | <a href="https://www.bilibili.com/video/BV1jh4y1X7cq">中✅</a>、<a href="https://learn.deeplearning.ai/chatgpt-prompt-eng/lesson/2/guidelines">英✅</a>                                       |
+| Python | <a href="#">中❌</a>、<a href="./python/en/guidelines.ipynb">英✅</a>                                                                                                                         |
+| NodeJS | <a href="./nodejs/cn/readme.md">中❌</a>、<a href="./nodejs/en/readme.md">英❌</a>                                                                                                            
+| Golang | <a href="#">中❌</a>、<a href="./golang/en/guidelines.go">英❌</a>                                                                                                                             |
+| 字幕     | <a href="./srt">中❌</a>、<a href="./srt">英✅</a>                                                                                                                                            
