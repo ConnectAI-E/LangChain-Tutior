@@ -22,3 +22,5 @@ export const changeStylePrompt=(email:string,style:string)=>`Translate the text
 that is delimited by <>
 into a style that is ${style}.
 text: <${email}>`
+
+

@@ -7,6 +7,7 @@ import {
 } from '../src/model_prompt_parser/prompt';
 import {getCompletion} from '../src/util/openai';
 import {getLangChainChat} from '../src/util/langchain';
+import {promptGen} from '../src/model_prompt_parser/promptTemplate';
 
 
 test('base OpenAI api', async () => {
@@ -36,6 +37,18 @@ describe('first try langChain', async () => {
         console.log(re);
         expect(re).not.toBe(null);
     });
+
+    it('from template', async () => {
+        const prompt =await promptGen.format({
+            customer_email:customer_email,
+            style:email_style
+        })
+        const re = await getLangChainChat(prompt);
+        console.log(re);
+        expect(re).not.toBe(null);
+
+    })
+
 });
 
 
