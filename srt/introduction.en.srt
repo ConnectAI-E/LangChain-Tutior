@@ -1,0 +1,348 @@
+1
+00:00:04,933 --> 00:00:07,299
+welcome to this short course on langchain for
+
+2
+00:00:07,300 --> 00:00:08,300
+large language model
+
+3
+00:00:08,300 --> 00:00:09,933
+application development
+
+4
+00:00:10,466 --> 00:00:13,499
+by prompting an LLM m or large language model
+
+5
+00:00:13,600 --> 00:00:14,700
+is now possible
+
+6
+00:00:14,733 --> 00:00:15,466
+to develop
+
+7
+00:00:15,466 --> 00:00:18,466
+AI applications much faster than never before
+
+8
+00:00:18,966 --> 00:00:20,899
+but an application can require
+
+9
+00:00:20,900 --> 00:00:22,966
+prompting an LLM multiple times
+
+10
+00:00:23,133 --> 00:00:24,733
+and pausing as output
+
+11
+00:00:24,866 --> 00:00:28,133
+and so does a lot of glue coat that needs to be written
+
+12
+00:00:28,600 --> 00:00:31,166
+langchain treated by Harrison Chase
+
+13
+00:00:31,300 --> 00:00:34,333
+makes this development process much easier
+
+14
+00:00:34,533 --> 00:00:36,333
+I'm thrilled to have Harrison here
+
+15
+00:00:36,333 --> 00:00:37,366
+who had built this
+
+16
+00:00:37,366 --> 00:00:40,166
+short course in collaboration with Deep Learning AI
+
+17
+00:00:40,266 --> 00:00:42,733
+to teach how to use this amazing tool
+
+18
+00:00:42,933 --> 00:00:43,766
+thanks for having me
+
+19
+00:00:43,766 --> 00:00:45,466
+I'm really excited to be here
+
+20
+00:00:45,533 --> 00:00:47,899
+LangChain started as an open source framework
+
+21
+00:00:47,900 --> 00:00:49,866
+for building LLM applications
+
+22
+00:00:49,866 --> 00:00:50,899
+it came about when
+
+23
+00:00:50,900 --> 00:00:52,766
+I was talking to a bunch of folks in
+
+24
+00:00:52,766 --> 00:00:53,933
+the field who were building
+
+25
+00:00:53,933 --> 00:00:54,966
+more complex
+
+26
+00:00:55,166 --> 00:00:57,666
+applications and saw some comet abstractions
+
+27
+00:00:57,666 --> 00:00:59,599
+in terms of how they were being developed
+
+28
+00:01:00,100 --> 00:01:00,900
+and we've been really
+
+29
+00:01:00,900 --> 00:01:03,466
+thrilled at the community adoption of link chain
+
+30
+00:01:03,466 --> 00:01:04,266
+so far
+
+31
+00:01:04,300 --> 00:01:06,766
+and so look forward to sharing it with everyone here
+
+32
+00:01:06,766 --> 00:01:08,699
+and look forward to seeing what people build with it
+
+33
+00:01:09,466 --> 00:01:12,666
+in fact as a sign of langchains momentum
+
+34
+00:01:12,966 --> 00:01:14,933
+not only does it have numerous users
+
+35
+00:01:14,933 --> 00:01:15,966
+but there are also many
+
+36
+00:01:15,966 --> 00:01:18,799
+hundreds of contributors to the open source
+
+37
+00:01:19,000 --> 00:01:21,266
+and this has been instrumental for this
+
+38
+00:01:21,366 --> 00:01:22,766
+rapid rate of development
+
+39
+00:01:22,766 --> 00:01:23,699
+this team really
+
+40
+00:01:23,700 --> 00:01:26,300
+ships cold and features at an amazing pace
+
+41
+00:01:26,900 --> 00:01:29,000
+so hopefully after the short course
+
+42
+00:01:29,000 --> 00:01:29,900
+you'll be able to
+
+43
+00:01:29,900 --> 00:01:32,533
+quickly put together some really cool applications
+
+44
+00:01:32,533 --> 00:01:33,733
+using LangChain
+
+45
+00:01:33,800 --> 00:01:34,600
+and who knows
+
+46
+00:01:34,600 --> 00:01:35,166
+maybe
+
+47
+00:01:35,166 --> 00:01:38,299
+you even decide to contribute back to the open source
+
+48
+00:01:38,333 --> 00:01:39,399
+LangChain effort
+
+49
+00:01:40,366 --> 00:01:42,166
+Lang Chain is an open source
+
+50
+00:01:42,166 --> 00:01:45,366
+development framework for building LLM applications
+
+51
+00:01:45,533 --> 00:01:47,299
+we have two different packages
+
+52
+00:01:47,300 --> 00:01:49,466
+a Python one and a Javascript one
+
+53
+00:01:49,766 --> 00:01:52,666
+they are focused on composition and modularity
+
+54
+00:01:52,666 --> 00:01:54,533
+so they have a lot of individual components
+
+55
+00:01:54,533 --> 00:01:55,533
+that can be used
+
+56
+00:01:55,700 --> 00:01:58,366
+in conjunction with each other or by themselves
+
+57
+00:01:58,466 --> 00:02:00,066
+and so that's one of the key value ads
+
+58
+00:02:00,066 --> 00:02:02,599
+and then the other key value ad is a bunch of
+
+59
+00:02:02,733 --> 00:02:03,733
+different use cases
+
+60
+00:02:03,733 --> 00:02:03,966
+so
+
+61
+00:02:03,966 --> 00:02:06,699
+chains of ways of combining these modular components
+
+62
+00:02:07,100 --> 00:02:09,766
+into more end and applications and making it
+
+63
+00:02:09,766 --> 00:02:11,099
+very easy to get started
+
+64
+00:02:11,100 --> 00:02:12,266
+with those use cases
+
+65
+00:02:13,000 --> 00:02:14,300
+in this class we'll cover
+
+66
+00:02:14,300 --> 00:02:16,100
+the common components of langchain
+
+67
+00:02:16,100 --> 00:02:17,500
+so we'll talk about models
+
+68
+00:02:17,666 --> 00:02:18,699
+we'll talk about prompts
+
+69
+00:02:18,700 --> 00:02:19,366
+which are how you
+
+70
+00:02:19,366 --> 00:02:21,733
+get models to do useful and interesting things
+
+71
+00:02:22,333 --> 00:02:24,699
+we'll talk about indixes which are ways of
+
+72
+00:02:24,966 --> 00:02:27,966
+ingesting data so that you can combine it with models
+
+73
+00:02:28,000 --> 00:02:29,500
+and then we'll talk about chains
+
+74
+00:02:29,500 --> 00:02:31,133
+which are more end to end use cases
+
+75
+00:02:31,133 --> 00:02:32,366
+along with agents
+
+76
+00:02:32,366 --> 00:02:34,966
+which are a very exciting type of end to end use case
+
+77
+00:02:34,966 --> 00:02:37,366
+which uses the model as a reasoning engine
+
+78
+00:02:38,066 --> 00:02:41,199
+we're also grateful to Anguish Golar who is
+
+79
+00:02:41,333 --> 00:02:44,533
+a co founder of Lang Chain alongside Harrison Chase
+
+80
+00:02:44,933 --> 00:02:47,666
+for also putting a lot of thought into these materials
+
+81
+00:02:47,666 --> 00:02:50,499
+in hoping with the creation of this short horse
+
+82
+00:02:50,733 --> 00:02:52,899
+and on the deep learning the AI side
+
+83
+00:02:52,900 --> 00:02:55,400
+Jeff Ladwick Edishu and Tiala
+
+84
+00:02:55,466 --> 00:02:58,466
+Azidine have also contributed to these materials
+
+85
+00:02:59,366 --> 00:03:01,566
+and so with that let's go on to the next video
+
+86
+00:03:01,566 --> 00:03:03,299
+we will learn about lankings
+
+87
+00:03:03,300 --> 00:03:04,933
+models prompts and puzzles
+

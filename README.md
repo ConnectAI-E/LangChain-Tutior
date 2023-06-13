@@ -11,7 +11,7 @@
 
 🥐 参考视频课程：https://learn.deeplearning.ai/langchain
 
-🍔 BiliBili：https://www.bilibili.com/video/BV1jh4y1X7cq
+🍔 BiliBili搬运：https://www.bilibili.com/video/BV1jh4y1X7cq
 
 🥪 实现语言：Python、NodeJs
 
