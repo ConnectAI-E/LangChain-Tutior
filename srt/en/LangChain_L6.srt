@@ -1,0 +1,529 @@
+1
+00:00:00,000 --> 00:00:08,920
+Sometimes people think of a large language model as a knowledge store,
+
+2
+00:00:08,920 --> 00:00:11,920
+as if it's learned to memorize a lot of information,
+
+3
+00:00:11,920 --> 00:00:14,880
+maybe off the internet, so when you ask it a question,
+
+4
+00:00:14,880 --> 00:00:16,380
+it can answer the question.
+
+5
+00:00:16,380 --> 00:00:19,340
+But I think a even more useful way to think of
+
+6
+00:00:19,340 --> 00:00:22,980
+a large language model is sometimes as a reasoning engine,
+
+7
+00:00:22,980 --> 00:00:27,140
+in which you can give it chunks of text or other sources of information.
+
+8
+00:00:27,140 --> 00:00:29,460
+Then the large language model, llm,
+
+9
+00:00:29,460 --> 00:00:33,000
+will maybe use this background knowledge that's learned off the internet,
+
+10
+00:00:33,000 --> 00:00:36,620
+but to use the new information you give it to help you answer
+
+11
+00:00:36,620 --> 00:00:41,100
+questions or reason through content or decide even what to do next.
+
+12
+00:00:41,100 --> 00:00:45,180
+That's what Lanchain's agents framework helps you to do.
+
+13
+00:00:45,180 --> 00:00:48,340
+Agents are probably my favorite part of Lanchain.
+
+14
+00:00:48,340 --> 00:00:50,320
+I think they're also one of the most powerful parts,
+
+15
+00:00:50,320 --> 00:00:52,140
+but they're also one of the newer parts.
+
+16
+00:00:52,140 --> 00:00:56,020
+We're seeing a lot of stuff emerge here that's really new to everyone in the field.
+
+17
+00:00:56,020 --> 00:00:58,940
+This should be a very exciting lesson as we dive
+
+18
+00:00:58,940 --> 00:01:01,180
+into what agents are, how to create,
+
+19
+00:01:01,180 --> 00:01:02,500
+and how to use agents,
+
+20
+00:01:02,500 --> 00:01:04,860
+how to equip them with different types of tools like
+
+21
+00:01:04,860 --> 00:01:07,180
+search engines that come built into Lanchain,
+
+22
+00:01:07,180 --> 00:01:11,480
+and then also how to create your own tools so that you can let agents interact with
+
+23
+00:01:11,480 --> 00:01:14,780
+any data stores, any APIs,
+
+24
+00:01:14,780 --> 00:01:16,860
+any functions that you might want them to.
+
+25
+00:01:16,860 --> 00:01:19,460
+This is exciting, cutting-edge stuff,
+
+26
+00:01:19,460 --> 00:01:23,060
+but already with emerging important use cases.
+
+27
+00:01:23,060 --> 00:01:25,620
+So with that, let's dive in.
+
+28
+00:01:25,620 --> 00:01:27,500
+To get started with agents,
+
+29
+00:01:27,500 --> 00:01:32,420
+we're going to start as we always do by importing the correct environment variables.
+
+30
+00:01:32,420 --> 00:01:35,100
+We're also going to need to install a few packages here.
+
+31
+00:01:35,100 --> 00:01:39,020
+So we're going to use the DuckDuckGo search engine and Wikipedia.
+
+32
+00:01:39,020 --> 00:01:40,780
+So we're going to want to pip install those.
+
+33
+00:01:40,780 --> 00:01:42,940
+I've already installed those in my environment,
+
+34
+00:01:42,940 --> 00:01:44,540
+so I'm not going to run this line.
+
+35
+00:01:44,540 --> 00:01:46,360
+But if you guys have not,
+
+36
+00:01:46,360 --> 00:01:48,580
+you should uncomment that line,
+
+37
+00:01:48,580 --> 00:01:51,300
+run it, and then you're good to go.
+
+38
+00:01:51,300 --> 00:01:56,060
+We're then going to import some methods and classes that we need from Lanchain.
+
+39
+00:01:56,060 --> 00:01:59,060
+So we're going to import some methods to load tools,
+
+40
+00:01:59,060 --> 00:02:02,340
+and these are things that we're going to connect the language model to.
+
+41
+00:02:02,340 --> 00:02:05,020
+We're going to load a method to initialize the agent.
+
+42
+00:02:05,020 --> 00:02:07,820
+We're going to load the chat open AI wrapper,
+
+43
+00:02:07,820 --> 00:02:09,500
+and we're going to load agent type.
+
+44
+00:02:09,500 --> 00:02:14,220
+So agent type will be used to specify what type of agent we want to use.
+
+45
+00:02:14,220 --> 00:02:16,540
+There are a bunch of different types of agents in Lanchain.
+
+46
+00:02:16,540 --> 00:02:18,780
+We're not going to go over all of them right now.
+
+47
+00:02:18,780 --> 00:02:21,420
+We'll just choose one and run with that.
+
+48
+00:02:21,420 --> 00:02:24,700
+We're then going to initialize the language model that we're going to use.
+
+49
+00:02:24,700 --> 00:02:30,500
+Again, we're using this as the reasoning engine that we're using to drive the agent.
+
+50
+00:02:30,500 --> 00:02:33,740
+We'll then load the tools that we're going to use.
+
+51
+00:02:33,740 --> 00:02:37,020
+So we're going to load DuckDuckGo search and Wikipedia,
+
+52
+00:02:37,020 --> 00:02:40,140
+and these are built-in Lanchain tools.
+
+53
+00:02:40,140 --> 00:02:42,980
+Finally, we're going to initialize the agent.
+
+54
+00:02:42,980 --> 00:02:44,780
+We pass it the tools,
+
+55
+00:02:44,780 --> 00:02:47,700
+the language model, and agent type.
+
+56
+00:02:47,700 --> 00:02:49,340
+So here we're using chat,
+
+57
+00:02:49,340 --> 00:02:51,460
+zero shot, react, description.
+
+58
+00:02:51,460 --> 00:02:54,060
+I'm not going to go over in too much detail what this means.
+
+59
+00:02:54,060 --> 00:02:56,220
+The important things to note are chat.
+
+60
+00:02:56,220 --> 00:03:00,540
+This is optimized to work with chat models, and then react.
+
+61
+00:03:00,540 --> 00:03:05,620
+React is a prompting strategy that elicits better thoughts from a language model.
+
+62
+00:03:05,620 --> 00:03:09,220
+We're also going to set handle parsing errors equals true.
+
+63
+00:03:09,220 --> 00:03:11,620
+If you remember from the first lesson,
+
+64
+00:03:11,620 --> 00:03:17,140
+we chatted a bunch about output parsers and how those can be used to take the LLM output,
+
+65
+00:03:17,140 --> 00:03:22,060
+which is a string, and parse it into a specific format that we can use downstream.
+
+66
+00:03:22,060 --> 00:03:23,740
+That's extremely important here.
+
+67
+00:03:23,740 --> 00:03:25,620
+When we take the output of the LLM,
+
+68
+00:03:25,620 --> 00:03:28,940
+which is text, and parse it into the specific action,
+
+69
+00:03:28,940 --> 00:03:32,700
+and the specific action input that the language model should take.
+
+70
+00:03:32,700 --> 00:03:34,300
+Let's now use this agent.
+
+71
+00:03:34,300 --> 00:03:38,940
+Let's ask it a question about a recent event that the model,
+
+72
+00:03:38,940 --> 00:03:41,060
+when it was trained, didn't know.
+
+73
+00:03:41,060 --> 00:03:43,860
+So let's ask it about the 2022 World Cup.
+
+74
+00:03:43,860 --> 00:03:47,660
+The models here were trained on data up to around 2021.
+
+75
+00:03:47,660 --> 00:03:49,820
+So it shouldn't know the answer to this question.
+
+76
+00:03:49,820 --> 00:03:55,580
+And so it should realize that it needs to use a tool to look up this recent piece of information.
+
+77
+00:04:05,340 --> 00:04:10,620
+So we can see here that the agent realizes that it needs to use DuckDuckGo search,
+
+78
+00:04:10,620 --> 00:04:14,900
+and then looks up the 2022 World Cup winner.
+
+79
+00:04:14,900 --> 00:04:18,060
+And so it gets back a bunch of information.
+
+80
+00:04:18,060 --> 00:04:23,940
+We can then see that the agent thinks that the 2022 World Cup has not happened yet.
+
+81
+00:04:23,940 --> 00:04:28,060
+So this is a good example of why agents are still pretty exploratory.
+
+82
+00:04:28,060 --> 00:04:32,020
+You can see that there's a bunch of information here about the 2022 World Cup,
+
+83
+00:04:32,020 --> 00:04:34,180
+but it doesn't quite realize all that has happened.
+
+84
+00:04:34,180 --> 00:04:38,180
+And so it needs to look up more things and get more information.
+
+85
+00:04:38,180 --> 00:04:40,220
+And so then based on that information,
+
+86
+00:04:40,220 --> 00:04:47,380
+it can respond with the correct answer that Argentina won the 2022 World Cup.
+
+87
+00:04:47,380 --> 00:04:52,500
+Let's then ask it a question where it should recognize that it needs to use Wikipedia.
+
+88
+00:04:52,500 --> 00:04:58,740
+So Wikipedia has a lot of information about specific people and specific entities
+
+89
+00:04:58,740 --> 00:05:02,980
+from a long time ago. It doesn't need to be current information.
+
+90
+00:05:02,980 --> 00:05:06,540
+So let's ask it about Tom M. Mitchell, an American computer scientist,
+
+91
+00:05:06,540 --> 00:05:08,420
+and what book did he write?
+
+92
+00:05:08,420 --> 00:05:12,700
+We can see here that it recognizes that it should use Wikipedia to look up the answer.
+
+93
+00:05:12,700 --> 00:05:16,020
+So it searches for Tom M. Mitchell Wikipedia.
+
+94
+00:05:16,020 --> 00:05:19,460
+And then does another follow-up search just to make sure that it's got the right answer.
+
+95
+00:05:19,460 --> 00:05:24,340
+So it searches for Tom M. Mitchell machine learning and gets back more information.
+
+96
+00:05:24,340 --> 00:05:27,060
+And then based on that, it's able to finally answer with
+
+97
+00:05:27,060 --> 00:05:29,660
+Tom M. Mitchell wrote the textbook, Machine Learning.
+
+98
+00:05:29,660 --> 00:05:33,580
+You should pause the video here and try putting in different inputs.
+
+99
+00:05:33,580 --> 00:05:38,380
+So far, we've used tools that come defined in LinkedIn already,
+
+100
+00:05:38,380 --> 00:05:42,820
+but a big power of agents is that you can connect it to your own sources of information,
+
+101
+00:05:42,820 --> 00:05:45,100
+your own APIs, your own data.
+
+102
+00:05:45,100 --> 00:05:47,700
+So here we're going to go over how you can create a custom tool
+
+103
+00:05:47,700 --> 00:05:50,700
+so that you can connect it to whatever you want.
+
+104
+00:05:50,700 --> 00:05:54,660
+Let's make a tool that's going to tell us what the current date is.
+
+105
+00:05:54,660 --> 00:05:57,500
+First, we're going to import this tool decorator.
+
+106
+00:05:57,500 --> 00:06:03,100
+This can be applied to any function, and it turns it into a tool that LinkedIn can use.
+
+107
+00:06:03,100 --> 00:06:08,500
+Next, we're going to write a function called time, which takes in any text string.
+
+108
+00:06:08,500 --> 00:06:09,900
+We're not really going to use that.
+
+109
+00:06:09,900 --> 00:06:15,540
+And it's going to return today's date by calling date time.
+
+110
+00:06:15,540 --> 00:06:20,660
+In addition to the name of the function, we're also going to write a really detailed doc string.
+
+111
+00:06:20,660 --> 00:06:25,100
+That's because this is what the agent will use to know when it should call this tool
+
+112
+00:06:25,100 --> 00:06:28,500
+and how it should call this tool.
+
+113
+00:06:28,500 --> 00:06:32,060
+For example, here we say that the input should always be an empty string.
+
+114
+00:06:32,060 --> 00:06:33,860
+That's because we don't use it.
+
+115
+00:06:33,860 --> 00:06:37,460
+If we have more stringent requirements on what the input should be,
+
+116
+00:06:37,460 --> 00:06:42,940
+for example, if we have a function that should always take in a search query or a SQL statement,
+
+117
+00:06:42,940 --> 00:06:47,340
+you'll want to make sure to mention that here.
+
+118
+00:06:47,340 --> 00:06:49,060
+We're now going to create another agent.
+
+119
+00:06:49,060 --> 00:06:55,660
+This time we're adding the time tool to the list of existing tools.
+
+120
+00:06:55,660 --> 00:07:03,660
+And finally, let's call the agent and ask it what the date today is.
+
+121
+00:07:03,660 --> 00:07:08,140
+It recognizes that it needs to use the time tool, which it specifies here.
+
+122
+00:07:08,140 --> 00:07:10,340
+It has the action input as an empty string.
+
+123
+00:07:10,340 --> 00:07:12,540
+This is great. This is what we told it to do.
+
+124
+00:07:12,540 --> 00:07:14,660
+And then it returns with an observation.
+
+125
+00:07:14,660 --> 00:07:18,740
+And then finally, the language model takes that observation and responds to the user.
+
+126
+00:07:18,740 --> 00:07:22,540
+Today's date is 2023-05-21.
+
+127
+00:07:22,540 --> 00:07:26,860
+You should pause the video here and try putting in different inputs.
+
+128
+00:07:26,860 --> 00:07:29,340
+This wraps up the lesson on agents.
+
+129
+00:07:29,340 --> 00:07:34,740
+This is one of the newer and more exciting and more experimental pieces of LangChain.
+
+130
+00:07:34,740 --> 00:07:36,540
+So I hope you enjoy using it.
+
+131
+00:07:36,540 --> 00:07:40,540
+Hopefully it showed you how you can use a language model as a reasoning engine
+
+132
+00:07:40,540 --> 00:08:00,540
+to take different actions and connect to other functions and data sources.
+
+

@@ -1,0 +1,229 @@
+1
+00:00:00,000 --> 00:00:06,440
+Welcome to this short course on
+
+2
+00:00:06,440 --> 00:00:10,040
+LandChain for large language model application development.
+
+3
+00:00:10,040 --> 00:00:13,480
+By prompting an llm or large language model,
+
+4
+00:00:13,480 --> 00:00:18,600
+it's now possible to develop AI applications much faster than ever before.
+
+5
+00:00:18,600 --> 00:00:24,800
+But an application can require prompting an llm multiple times and parsing as output.
+
+6
+00:00:24,800 --> 00:00:28,220
+So there's a lot of glue code that needs to be written.
+
+7
+00:00:28,220 --> 00:00:34,360
+LandChain created by Harrison Chase makes this development process much easier.
+
+8
+00:00:34,360 --> 00:00:36,280
+I'm thrilled to have Harrison here,
+
+9
+00:00:36,280 --> 00:00:38,920
+who had built this short course in collaboration with
+
+10
+00:00:38,920 --> 00:00:42,680
+deeplearning.ai to teach how to use this amazing tool.
+
+11
+00:00:42,680 --> 00:00:45,400
+Thanks for having me. I'm really excited to be here.
+
+12
+00:00:45,400 --> 00:00:49,760
+LandChain started as an open source framework for building all on applications.
+
+13
+00:00:49,760 --> 00:00:53,360
+It came about when I was talking to a bunch of folks in the field who were
+
+14
+00:00:53,360 --> 00:00:56,200
+building more complex applications and saw
+
+15
+00:00:56,200 --> 00:00:59,760
+some common abstractions in terms of how they were being developed.
+
+16
+00:00:59,760 --> 00:01:04,320
+We've been really thrilled at the community adoption of LandChain so far.
+
+17
+00:01:04,320 --> 00:01:06,400
+So look forward to sharing it with everyone
+
+18
+00:01:06,400 --> 00:01:08,960
+here and look forward to seeing what people build with it.
+
+19
+00:01:08,960 --> 00:01:12,700
+In fact, as a sign of LandChain's momentum,
+
+20
+00:01:12,700 --> 00:01:14,920
+not only does it have numerous users,
+
+21
+00:01:14,920 --> 00:01:19,000
+but there are also many hundreds of contributors to the open source.
+
+22
+00:01:19,000 --> 00:01:22,760
+This has been instrumental for its rapid rate of development.
+
+23
+00:01:22,760 --> 00:01:26,440
+This team really shifts code and features at an amazing pace.
+
+24
+00:01:26,440 --> 00:01:28,960
+So hopefully, after this short course,
+
+25
+00:01:28,960 --> 00:01:33,720
+you'll be able to quickly put together some really cool applications using LandChain.
+
+26
+00:01:33,720 --> 00:01:36,280
+And who knows, maybe you even decide to
+
+27
+00:01:36,280 --> 00:01:39,800
+contribute back to the open source LandChain effort.
+
+28
+00:01:39,800 --> 00:01:45,360
+LandChain is an open source development framework for building applications.
+
+29
+00:01:45,360 --> 00:01:47,280
+We have two different packages,
+
+30
+00:01:47,280 --> 00:01:49,520
+a Python one and a JavaScript one.
+
+31
+00:01:49,520 --> 00:01:52,600
+They're focused on composition and modularity.
+
+32
+00:01:52,600 --> 00:01:54,960
+So they have a lot of individual components that can be
+
+33
+00:01:54,960 --> 00:01:58,320
+used in conjunction with each other or by themselves.
+
+34
+00:01:58,320 --> 00:02:00,080
+And so that's one of the key value adds.
+
+35
+00:02:00,080 --> 00:02:03,680
+And then the other key value add is a bunch of different use cases.
+
+36
+00:02:03,680 --> 00:02:07,280
+So chains of ways of combining these modular components into
+
+37
+00:02:07,280 --> 00:02:09,680
+more end-to-end applications and making it
+
+38
+00:02:09,680 --> 00:02:12,640
+very easy to get started with those use cases.
+
+39
+00:02:12,640 --> 00:02:16,080
+In this class, we'll cover the common components of LandChain.
+
+40
+00:02:16,080 --> 00:02:17,520
+So we'll talk about models.
+
+41
+00:02:17,520 --> 00:02:19,560
+We'll talk about prompts, which are how you get
+
+42
+00:02:19,560 --> 00:02:22,080
+models to do useful and interesting things.
+
+43
+00:02:22,080 --> 00:02:23,480
+We'll talk about indexes,
+
+44
+00:02:23,480 --> 00:02:27,920
+which are ways of ingesting data so that you can combine it with models.
+
+45
+00:02:27,920 --> 00:02:29,480
+And then we'll talk about chains,
+
+46
+00:02:29,480 --> 00:02:32,280
+which are more end-to-end use cases along with agents,
+
+47
+00:02:32,280 --> 00:02:34,920
+which are a very exciting type of end-to-end use case,
+
+48
+00:02:34,920 --> 00:02:37,680
+which uses the model as a reasoning engine.
+
+49
+00:02:37,680 --> 00:02:40,320
+We're also grateful to Ankush Gholar,
+
+50
+00:02:40,320 --> 00:02:44,600
+who is the co-founder of LandChain alongside Harrison Chase,
+
+51
+00:02:44,600 --> 00:02:46,840
+for also putting a lot of thoughts into
+
+52
+00:02:46,840 --> 00:02:50,480
+these materials and helping with the creation of this short course.
+
+53
+00:02:50,480 --> 00:02:52,840
+And on the deep learning.ai side,
+
+54
+00:02:52,840 --> 00:02:56,080
+Jeff Ludwig, Eddie Hsu, and Diala Ezzedine,
+
+55
+00:02:56,080 --> 00:02:58,840
+have also contributed to these materials.
+
+56
+00:02:58,840 --> 00:03:02,040
+And so with that, let's go on to the next video where we'll learn
+
+57
+00:03:02,040 --> 00:03:21,040
+about LandChain's models, prompts, and pauses.
+
+

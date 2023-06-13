@@ -1,0 +1,1129 @@
+1
+00:00:00,000 --> 00:00:08,720
+In lesson one, we'll be covering models, prompts, and parsers.
+
+2
+00:00:08,720 --> 00:00:13,320
+So models refers to the language models underpinning a lot of it.
+
+3
+00:00:13,320 --> 00:00:18,680
+Prompts refers to the style of creating inputs to pass into the models.
+
+4
+00:00:18,680 --> 00:00:20,400
+And then parsers is on the opposite end.
+
+5
+00:00:20,400 --> 00:00:24,360
+It involves taking the output of these models and parsing it into a more
+
+6
+00:00:24,360 --> 00:00:27,360
+structured format so that you can do things downstream with it.
+
+7
+00:00:27,360 --> 00:00:30,640
+So when you build a application using an llm,
+
+8
+00:00:30,640 --> 00:00:32,600
+they'll often be reusable models.
+
+9
+00:00:32,600 --> 00:00:34,160
+We repeatedly prompt a model,
+
+10
+00:00:34,160 --> 00:00:36,520
+parses outputs, and so Lanchain gives
+
+11
+00:00:36,520 --> 00:00:39,760
+an easy set of abstractions to do this type of operation.
+
+12
+00:00:39,760 --> 00:00:44,640
+So with that, let's jump in and take a look at models, prompts, and parsers.
+
+13
+00:00:44,640 --> 00:00:46,160
+So to get started,
+
+14
+00:00:46,160 --> 00:00:47,640
+here's a little bit of starter code.
+
+15
+00:00:47,640 --> 00:00:48,840
+I'm going to import OS,
+
+16
+00:00:48,840 --> 00:00:53,240
+import OpenAI, and load my OpenAI secret key.
+
+17
+00:00:53,240 --> 00:00:56,400
+The OpenAI library is already installed in
+
+18
+00:00:56,400 --> 00:00:59,920
+my Jupyter notebook environment so if you're running this locally,
+
+19
+00:00:59,920 --> 00:01:01,960
+and you don't have OpenAI installed yet,
+
+20
+00:01:01,960 --> 00:01:04,000
+you might need to run that.
+
+21
+00:01:04,000 --> 00:01:06,840
+BangPip install OpenAI, but I'm not going to do that here.
+
+22
+00:01:06,840 --> 00:01:08,720
+And then here's a helper function.
+
+23
+00:01:08,720 --> 00:01:10,280
+This is actually, um,
+
+24
+00:01:10,280 --> 00:01:13,960
+very similar to the helper function that you might have seen in
+
+25
+00:01:13,960 --> 00:01:17,240
+the chatGPT prompt engineering for developers course
+
+26
+00:01:17,240 --> 00:01:20,360
+that I offered together with OpenAI's user forfeit.
+
+27
+00:01:20,360 --> 00:01:22,160
+And so with this helper function,
+
+28
+00:01:22,160 --> 00:01:25,200
+you can say get completion on,
+
+29
+00:01:25,200 --> 00:01:31,120
+um, what is 1 plus 1 and this will call chatGPT or technically the model,
+
+30
+00:01:31,120 --> 00:01:35,400
+GPT 3.5 Turbo to give you an answer back like this.
+
+31
+00:01:35,400 --> 00:01:42,840
+Now, to motivate the line chain abstractions for model prompts and parsers,
+
+32
+00:01:42,840 --> 00:01:48,640
+um, let's say you get an email from a customer in a language other than English.
+
+33
+00:01:48,640 --> 00:01:51,760
+Um, in order to make sure this is accessible,
+
+34
+00:01:51,760 --> 00:01:56,040
+the other language I'm going to use is the English pirate language.
+
+35
+00:01:56,040 --> 00:01:57,120
+When the customer says, R,
+
+36
+00:01:57,120 --> 00:02:02,280
+I'd be fuming that me blender lid flew off and splatted my kitchen walls with smoothie.
+
+37
+00:02:02,280 --> 00:02:06,120
+And to make matters worse, the warranty don't cover the cost of cleaning up me kitchen.
+
+38
+00:02:06,120 --> 00:02:08,000
+I need your help right now, matey.
+
+39
+00:02:08,000 --> 00:02:12,400
+And so what we will do is ask this LLM to
+
+40
+00:02:12,400 --> 00:02:18,080
+translate the text to American English in a calm and respectful tone.
+
+41
+00:02:18,080 --> 00:02:22,520
+So I'm going to set style to American English in a calm and respectful tone.
+
+42
+00:02:22,520 --> 00:02:26,080
+And so in order to actually accomplish this,
+
+43
+00:02:26,080 --> 00:02:29,080
+if you've seen a little bit of prompting before,
+
+44
+00:02:29,080 --> 00:02:33,040
+I'm going to specify the prompt using an f-string with the instructions,
+
+45
+00:02:33,040 --> 00:02:38,160
+translate the text that is delimited by triple backticks into style that is style.
+
+46
+00:02:38,160 --> 00:02:39,880
+And then plug in these two styles.
+
+47
+00:02:39,880 --> 00:02:46,200
+And so this generates a prompt that says translate the text and so on.
+
+48
+00:02:46,200 --> 00:02:49,840
+I encourage you to pause the video and run the code and also
+
+49
+00:02:49,840 --> 00:02:54,080
+try modifying the prompt to see if you can get a different output.
+
+50
+00:02:54,080 --> 00:02:57,520
+You can then, um,
+
+51
+00:02:57,520 --> 00:03:02,080
+prompt the large language model to get a response.
+
+52
+00:03:02,080 --> 00:03:04,320
+Let's see what the response is.
+
+53
+00:03:04,320 --> 00:03:07,880
+Says translated the English pirates message into this very polite,
+
+54
+00:03:07,880 --> 00:03:10,680
+I'm really frustrated that my blender lid flew off and made
+
+55
+00:03:10,680 --> 00:03:13,480
+a mess of my kitchen walls with smoothie and so on.
+
+56
+00:03:13,480 --> 00:03:18,120
+Um, I could really use your help right now my friend. That sounds very nice.
+
+57
+00:03:18,120 --> 00:03:23,160
+So if you have different customers writing reviews in different languages,
+
+58
+00:03:23,160 --> 00:03:26,880
+not just English pirate, but French, German, Japanese, and so on,
+
+59
+00:03:26,880 --> 00:03:29,800
+you can imagine having to generate
+
+60
+00:03:29,800 --> 00:03:33,920
+a whole sequence of prompts to generate such translations.
+
+61
+00:03:33,920 --> 00:03:39,360
+Let's look at how we can do this in a more convenient way using Lang chain.
+
+62
+00:03:39,360 --> 00:03:44,360
+I'm going to import chat open AI.
+
+63
+00:03:44,360 --> 00:03:49,320
+This is Lang chain's abstraction for the chat GPT API endpoint.
+
+64
+00:03:49,320 --> 00:03:53,840
+And so if I then set chat equals chat open AI and look at what chat is,
+
+65
+00:03:53,840 --> 00:03:55,800
+it creates this object, um,
+
+66
+00:03:55,800 --> 00:03:59,720
+as follows that uses the chat GPT model,
+
+67
+00:03:59,720 --> 00:04:02,320
+which is also called GPT 3.5 turbo.
+
+68
+00:04:02,320 --> 00:04:04,560
+When I'm building applications,
+
+69
+00:04:04,560 --> 00:04:09,560
+one thing I will often do is set the temperature parameter to be equal to 0.
+
+70
+00:04:09,560 --> 00:04:11,800
+So the default temperature is 0.7.
+
+71
+00:04:11,800 --> 00:04:20,040
+But let me actually redo that with temperature equals 0.0.
+
+72
+00:04:20,040 --> 00:04:25,400
+And now the temperature is set to 0 to make us output a little bit less random.
+
+73
+00:04:26,800 --> 00:04:30,960
+And now let me define the template string as follows.
+
+74
+00:04:30,960 --> 00:04:35,000
+Translate the text delimited by triple vectors into style that is style.
+
+75
+00:04:35,000 --> 00:04:36,800
+And then here's the text.
+
+76
+00:04:36,800 --> 00:04:40,320
+And to repeatedly reuse this template,
+
+77
+00:04:40,320 --> 00:04:46,200
+let's import Lang chain's chat prompt template.
+
+78
+00:04:46,200 --> 00:04:54,840
+And then let me create a prompt template using that template string that we just wrote above.
+
+79
+00:04:54,840 --> 00:05:01,560
+From the prompt template,
+
+80
+00:05:01,560 --> 00:05:06,120
+you can actually extract the original prompt and it realizes that
+
+81
+00:05:06,120 --> 00:05:10,520
+this prompt has two input variables, the style and the text,
+
+82
+00:05:10,520 --> 00:05:16,040
+which were, um, shown here with the curly braces.
+
+83
+00:05:16,040 --> 00:05:20,200
+And here is the original template as well that we had specified.
+
+84
+00:05:20,200 --> 00:05:22,760
+In fact, if I print this out,
+
+85
+00:05:22,760 --> 00:05:27,800
+um, it realizes it has two input variables, style and text.
+
+86
+00:05:27,800 --> 00:05:30,200
+Now let's specify the style.
+
+87
+00:05:30,200 --> 00:05:31,960
+This is a style that I want the, uh,
+
+88
+00:05:31,960 --> 00:05:33,800
+customer message to be translated to.
+
+89
+00:05:33,800 --> 00:05:36,320
+So I'm gonna call this customer style.
+
+90
+00:05:36,320 --> 00:05:44,120
+And, uh, here's my same customer email as before.
+
+91
+00:05:44,120 --> 00:05:50,960
+And now, if I create
+
+92
+00:05:50,960 --> 00:05:55,520
+customer messages, this will generate the prompt,
+
+93
+00:05:55,520 --> 00:05:59,560
+and will pass this a large language model in a minute to get a response.
+
+94
+00:05:59,560 --> 00:06:01,880
+So if you want to look at the types,
+
+95
+00:06:01,880 --> 00:06:04,400
+the customer message is actually a list.
+
+96
+00:06:04,400 --> 00:06:10,760
+And, um, if you look at the first element of the list,
+
+97
+00:06:10,760 --> 00:06:16,880
+this is more or less that prompt that you would expect this to be creating.
+
+98
+00:06:16,880 --> 00:06:20,440
+Lastly, let's pass this prompt to the LLM.
+
+99
+00:06:20,440 --> 00:06:22,560
+So I'm gonna call chat,
+
+100
+00:06:22,560 --> 00:06:25,040
+which we had set earlier, um,
+
+101
+00:06:25,040 --> 00:06:28,480
+as a reference to the OpenAI chat GPT endpoint.
+
+102
+00:06:28,480 --> 00:06:36,320
+And if we print out the customer responses content,
+
+103
+00:06:36,320 --> 00:06:38,800
+then it gives you back, um,
+
+104
+00:06:38,800 --> 00:06:45,000
+this text translated from English Pirate to polite American English.
+
+105
+00:06:45,000 --> 00:06:47,840
+And of course, you can imagine other use cases where
+
+106
+00:06:47,840 --> 00:06:53,400
+the customer emails are in other languages and this too can be used to
+
+107
+00:06:53,400 --> 00:06:58,400
+translate the messages for an English-speaking to understand and reply to.
+
+108
+00:06:58,400 --> 00:07:02,280
+I encourage you to pause the video and run the code and also
+
+109
+00:07:02,280 --> 00:07:06,280
+try modifying the prompt to see if you can get a different output.
+
+110
+00:07:06,280 --> 00:07:09,240
+Now, let's hope our customer service agent
+
+111
+00:07:09,240 --> 00:07:11,800
+reply to the customer in their original language.
+
+112
+00:07:11,800 --> 00:07:16,160
+So let's say English-speaking customer service agent writes this and say,
+
+113
+00:07:16,160 --> 00:07:18,240
+hey there customer, warranty does not cover,
+
+114
+00:07:18,240 --> 00:07:20,280
+clean expenses for your kitchen because it's your fault,
+
+115
+00:07:20,280 --> 00:07:23,520
+that you misused your blender by forgetting to put on the lid.
+
+116
+00:07:23,520 --> 00:07:24,920
+Tough luck, see ya.
+
+117
+00:07:24,920 --> 00:07:26,320
+Not a very polite message,
+
+118
+00:07:26,320 --> 00:07:31,560
+but, um, let's say this is what a customer service agent wants.
+
+119
+00:07:31,720 --> 00:07:36,040
+We are going to specify that
+
+120
+00:07:36,040 --> 00:07:39,480
+the service message is going to be translated to this pirate style.
+
+121
+00:07:39,480 --> 00:07:45,120
+So we want it to be in a polite tone that speaks in English Pirate.
+
+122
+00:07:45,120 --> 00:07:48,080
+And because we previously created that prompt template,
+
+123
+00:07:48,080 --> 00:07:52,520
+the cool thing is we can now reuse that prompt template and specify that
+
+124
+00:07:52,520 --> 00:07:58,240
+the output style we want is this service style pirate and the text is this service reply.
+
+125
+00:07:58,240 --> 00:08:01,240
+And if we do that,
+
+126
+00:08:01,800 --> 00:08:05,200
+that's the prompt.
+
+127
+00:08:05,760 --> 00:08:09,160
+And if we prompt, um,
+
+128
+00:08:09,160 --> 00:08:13,040
+chat GPT, this is a response it gives us back.
+
+129
+00:08:13,040 --> 00:08:18,080
+Ahoy there matey, I must kindly inform you that the warranty be not covering
+
+130
+00:08:18,080 --> 00:08:21,200
+the expenses or cleaning your galley and so on.
+
+131
+00:08:21,200 --> 00:08:23,520
+Aye tough luck, farewell me hearty.
+
+132
+00:08:23,520 --> 00:08:27,600
+So you might be wondering why are we using prompt templates instead of,
+
+133
+00:08:27,600 --> 00:08:28,920
+you know, just an F-string?
+
+134
+00:08:28,920 --> 00:08:32,480
+The answer is that as you build sophisticated applications,
+
+135
+00:08:32,480 --> 00:08:35,360
+prompts can be quite long and detailed.
+
+136
+00:08:35,360 --> 00:08:42,440
+And so prompt templates are a useful abstraction to help you reuse good prompts when you can.
+
+137
+00:08:42,440 --> 00:08:46,760
+Um, this is an example of a relatively long prompt to
+
+138
+00:08:46,760 --> 00:08:52,000
+grade a student's submission for an online learning application.
+
+139
+00:08:52,000 --> 00:08:57,560
+And a prompt like this can be quite long in which you can ask the LLM to first solve
+
+140
+00:08:57,560 --> 00:09:02,600
+the problem and then have the output in a certain format and output in a certain format.
+
+141
+00:09:02,600 --> 00:09:08,720
+And wrapping this in a Lanchain prompt makes it easier to reuse a prompt like this.
+
+142
+00:09:08,720 --> 00:09:14,640
+Also, you see later that Lanchain provides prompts for some common operations,
+
+143
+00:09:14,640 --> 00:09:20,520
+such as summarization or question answering or connecting to SQL databases,
+
+144
+00:09:20,520 --> 00:09:22,280
+or connecting to different APIs.
+
+145
+00:09:22,280 --> 00:09:25,880
+And so by using some of Lanchain's built-in prompts,
+
+146
+00:09:25,880 --> 00:09:29,640
+you can quickly get an application working without needing to,
+
+147
+00:09:29,640 --> 00:09:31,880
+um, engineer your own prompts.
+
+148
+00:09:31,880 --> 00:09:37,840
+One other aspect of Lanchain's prompt libraries is that,
+
+149
+00:09:37,840 --> 00:09:40,600
+it also supports output parsing,
+
+150
+00:09:40,600 --> 00:09:42,920
+which we'll get to in a minute.
+
+151
+00:09:42,920 --> 00:09:46,840
+But when you're building a complex application using an LLM,
+
+152
+00:09:46,840 --> 00:09:52,600
+you often instruct the LLM to generate its output in a certain format,
+
+153
+00:09:52,600 --> 00:09:55,240
+such as using specific keywords.
+
+154
+00:09:55,240 --> 00:10:00,680
+This example on the left illustrates using an LLM to carry out something called
+
+155
+00:10:00,680 --> 00:10:06,160
+chain of thought reasoning using a framework called the React framework.
+
+156
+00:10:06,160 --> 00:10:09,280
+But don't worry about the technical details,
+
+157
+00:10:09,280 --> 00:10:15,560
+but the keys of that is that the thought is what the LLM is thinking,
+
+158
+00:10:15,560 --> 00:10:18,160
+because by giving an LLM space to think,
+
+159
+00:10:18,160 --> 00:10:21,240
+it can often get some more accurate conclusions.
+
+160
+00:10:21,240 --> 00:10:25,520
+Then action as a keyword to carry the specific action,
+
+161
+00:10:25,520 --> 00:10:31,240
+and then observation to show what it learned from that action, and so on.
+
+162
+00:10:31,240 --> 00:10:37,480
+And if you have a prompt that instructs the LLM to use these specific keywords,
+
+163
+00:10:37,480 --> 00:10:39,920
+thought, action, and observation,
+
+164
+00:10:39,920 --> 00:10:44,320
+then this prompt can be coupled with a parser to extract out
+
+165
+00:10:44,320 --> 00:10:48,040
+the text that has been tagged with these specific keywords.
+
+166
+00:10:48,040 --> 00:10:55,120
+And so that together gives a very nice abstraction to specify the input to an LLM,
+
+167
+00:10:55,120 --> 00:11:01,040
+and then also have a parser correctly interpret the output that the LLM gives.
+
+168
+00:11:01,040 --> 00:11:08,680
+And so with that, let's return to see an example of an output parser using Langchain.
+
+169
+00:11:08,680 --> 00:11:14,160
+In this example, let's take a look at how you can have an LLM output JSON,
+
+170
+00:11:14,160 --> 00:11:17,280
+and use Langchain to parse that output.
+
+171
+00:11:17,280 --> 00:11:23,440
+And the running example that I'll use will be to extract information from
+
+172
+00:11:23,440 --> 00:11:28,800
+a product review and format that output in a JSON format.
+
+173
+00:11:28,800 --> 00:11:33,920
+So here's an example of how you would like the output to be formatted.
+
+174
+00:11:33,920 --> 00:11:36,720
+Technically, this is a Python dictionary,
+
+175
+00:11:36,720 --> 00:11:38,960
+where whether or not the product is a GIF,
+
+176
+00:11:38,960 --> 00:11:41,840
+massive false, the number of days it took to deliver it was five,
+
+177
+00:11:41,840 --> 00:11:44,440
+and the price value was pretty affordable.
+
+178
+00:11:44,440 --> 00:11:48,280
+So this is one example of a desired output.
+
+179
+00:11:48,280 --> 00:11:50,720
+Here is an example of,
+
+180
+00:11:50,720 --> 00:11:57,160
+um, customer review as well as a template to try to get to that JSON output.
+
+181
+00:11:57,160 --> 00:11:58,520
+So here's a customer review.
+
+182
+00:11:58,520 --> 00:12:00,600
+It says, the sleep blower is pretty amazing.
+
+183
+00:12:00,600 --> 00:12:02,480
+It has four settings, candle blower,
+
+184
+00:12:02,480 --> 00:12:04,800
+gentle breeze, windy city, and tornado.
+
+185
+00:12:04,800 --> 00:12:08,640
+It arrived in two days just in time for my wife's anniversary present.
+
+186
+00:12:08,640 --> 00:12:10,960
+I think my wife liked it so much she was speechless.
+
+187
+00:12:10,960 --> 00:12:13,840
+So far, I've been the only one using it, and so on.
+
+188
+00:12:13,840 --> 00:12:15,520
+Um, and here's a review template.
+
+189
+00:12:15,520 --> 00:12:18,080
+For the following text, extract the following information,
+
+190
+00:12:18,080 --> 00:12:20,040
+specify was this a GIF.
+
+191
+00:12:20,040 --> 00:12:21,680
+So in this case, it would be yes,
+
+192
+00:12:21,680 --> 00:12:22,840
+because this is a GIF.
+
+193
+00:12:22,840 --> 00:12:25,640
+Um, and also delivery days.
+
+194
+00:12:25,640 --> 00:12:27,160
+How long did it take to deliver?
+
+195
+00:12:27,160 --> 00:12:29,640
+It looks like in this case, it arrived in two days.
+
+196
+00:12:29,640 --> 00:12:32,040
+And, um, what's the price value?
+
+197
+00:12:32,040 --> 00:12:35,640
+You know, slightly more expensive than the sleep blowers, and so on.
+
+198
+00:12:35,640 --> 00:12:42,920
+So the review template asks the LLM to take as input a customer review,
+
+199
+00:12:42,920 --> 00:12:45,920
+and extract these three fields,
+
+200
+00:12:45,920 --> 00:12:48,360
+and then format the output as JSON,
+
+201
+00:12:48,360 --> 00:12:52,000
+um, with the following keys.
+
+202
+00:12:52,000 --> 00:12:56,400
+All right.
+
+203
+00:12:56,400 --> 00:13:01,080
+So here's how you can wrap this in line chain.
+
+204
+00:13:01,080 --> 00:13:02,920
+Let's import the chat prompt template.
+
+205
+00:13:02,920 --> 00:13:04,760
+We'd actually imported this already earlier.
+
+206
+00:13:04,760 --> 00:13:06,520
+So technically, this line is redundant,
+
+207
+00:13:06,520 --> 00:13:08,360
+but I'll just import it again,
+
+208
+00:13:08,360 --> 00:13:10,680
+and then have the prompt templates, um,
+
+209
+00:13:10,680 --> 00:13:16,040
+created from the review template up on top.
+
+210
+00:13:16,040 --> 00:13:19,480
+And so here's the prompt template.
+
+211
+00:13:19,480 --> 00:13:23,680
+And now, similar to our early usage of a prompt template,
+
+212
+00:13:23,680 --> 00:13:32,000
+let's create the messages to pass to the OpenAI, uh, endpoint.
+
+213
+00:13:32,000 --> 00:13:34,760
+Create the OpenAI endpoint,
+
+214
+00:13:34,760 --> 00:13:39,000
+call that endpoint, and then let's print out the response.
+
+215
+00:13:39,000 --> 00:13:42,960
+I encourage you to pause the video and run the code.
+
+216
+00:13:44,440 --> 00:13:46,520
+And there it is.
+
+217
+00:13:46,520 --> 00:13:49,000
+It says GIF is true, delivery days is two,
+
+218
+00:13:49,000 --> 00:13:52,920
+and the price value also looks pretty accurate.
+
+219
+00:13:52,920 --> 00:14:02,280
+Um, but note that if we check the type of the response,
+
+220
+00:14:02,280 --> 00:14:04,040
+this is actually a string.
+
+221
+00:14:04,040 --> 00:14:07,960
+So it looks like JSON and looks like it has key value pairs,
+
+222
+00:14:07,960 --> 00:14:09,480
+but it's actually not a dictionary.
+
+223
+00:14:09,480 --> 00:14:11,920
+This is just one long string.
+
+224
+00:14:11,920 --> 00:14:14,720
+So what I'd really like to do is go to the response content,
+
+225
+00:14:14,720 --> 00:14:17,560
+and get the value from the GIF key, which should be true.
+
+226
+00:14:17,560 --> 00:14:21,080
+But I run this, this should generate an error because, well,
+
+227
+00:14:21,080 --> 00:14:24,040
+this is actually a string, this is not a Python dictionary.
+
+228
+00:14:24,040 --> 00:14:27,680
+So let's see how we would use Langchain's,
+
+229
+00:14:27,680 --> 00:14:31,200
+um, parser in order to do this.
+
+230
+00:14:31,200 --> 00:14:39,560
+I'm going to import response schema and structured output parser from Langchain.
+
+231
+00:14:39,560 --> 00:14:46,400
+And, um, I'm going to tell it what I wanted to parse by specifying these response schemas.
+
+232
+00:14:46,400 --> 00:14:49,080
+So the GIF schema is named GIF,
+
+233
+00:14:49,080 --> 00:14:50,200
+and here's the description.
+
+234
+00:14:50,200 --> 00:14:52,720
+Was the item purchased as a gift for someone else?
+
+235
+00:14:52,720 --> 00:14:54,240
+Uh, answer true or yes,
+
+236
+00:14:54,240 --> 00:14:56,360
+false if not or unknown, and so on.
+
+237
+00:14:56,360 --> 00:14:58,080
+So have a GIF schema,
+
+238
+00:14:58,080 --> 00:15:00,480
+delivery day schema, price value schema,
+
+239
+00:15:00,480 --> 00:15:05,400
+and then let's put all three of them into a list as follows.
+
+240
+00:15:05,400 --> 00:15:08,760
+Now that I've specified the schema for these, um,
+
+241
+00:15:08,760 --> 00:15:12,880
+Langchain can actually give you the prompt itself, uh,
+
+242
+00:15:12,880 --> 00:15:20,080
+by having the output parser tell you what instructions it wants you to send to the LLM.
+
+243
+00:15:20,080 --> 00:15:24,320
+So if I were to print format instructions,
+
+244
+00:15:24,840 --> 00:15:29,200
+she has a pretty precise set of instructions for the LLM that will cause it to
+
+245
+00:15:29,200 --> 00:15:33,640
+generate an output that the output parser can process.
+
+246
+00:15:33,880 --> 00:15:37,400
+So here's the new review template.
+
+247
+00:15:37,400 --> 00:15:41,440
+And the review template includes the format instructions that
+
+248
+00:15:41,440 --> 00:15:50,720
+Langchain generated and so can create a prompt from the review template too,
+
+249
+00:15:50,720 --> 00:15:57,960
+and then create the messages that will pass to the OpenAI endpoint.
+
+250
+00:15:57,960 --> 00:16:02,240
+If you want, you can take a look at the actual prompt,
+
+251
+00:16:02,240 --> 00:16:07,440
+which gives you instructions to extract the fields,
+
+252
+00:16:07,440 --> 00:16:10,400
+GIF, delivery days, price value.
+
+253
+00:16:10,400 --> 00:16:15,400
+Here's the text and then here are the formatting instructions.
+
+254
+00:16:17,400 --> 00:16:25,240
+Finally, if we call the OpenAI endpoint,
+
+255
+00:16:25,240 --> 00:16:29,120
+let's take a look at what response we got.
+
+256
+00:16:29,120 --> 00:16:32,520
+It is now this.
+
+257
+00:16:33,320 --> 00:16:38,760
+And now if we use the output parser that we created,
+
+258
+00:16:38,760 --> 00:16:46,040
+earlier, you can then parse this into an output dictionary.
+
+259
+00:16:46,040 --> 00:16:49,080
+We should have our print looks like this.
+
+260
+00:16:49,080 --> 00:16:52,440
+And notice that this is,
+
+261
+00:16:52,440 --> 00:16:57,000
+um, of type dictionary, not a string.
+
+262
+00:16:57,000 --> 00:17:03,920
+Which is why I can now extract the value associated with the key GIFs and get true,
+
+263
+00:17:03,920 --> 00:17:08,640
+or the value associated with delivery days and get two.
+
+264
+00:17:08,640 --> 00:17:10,800
+Or you can also, um,
+
+265
+00:17:10,800 --> 00:17:14,040
+extract the value associated with price value.
+
+266
+00:17:14,040 --> 00:17:20,160
+So this is a nifty way to take your LLM output and parse it into
+
+267
+00:17:20,160 --> 00:17:25,080
+a Python dictionary to make the output easier to use in downstream processing.
+
+268
+00:17:25,080 --> 00:17:28,440
+I encourage you to pause the video and run the code.
+
+269
+00:17:28,440 --> 00:17:31,160
+And so that's it for models,
+
+270
+00:17:31,160 --> 00:17:32,680
+prompts, and parsers.
+
+271
+00:17:32,680 --> 00:17:37,640
+With these tools, hopefully you'll be able to reuse your own prompt templates easily,
+
+272
+00:17:37,640 --> 00:17:40,280
+share prompt templates with others that you're collaborating with,
+
+273
+00:17:40,280 --> 00:17:43,560
+even use Lanchain's built-in prompt templates,
+
+274
+00:17:43,560 --> 00:17:45,040
+which as you just saw,
+
+275
+00:17:45,040 --> 00:17:47,920
+can often be coupled with an output parser.
+
+276
+00:17:47,920 --> 00:17:53,280
+So that the input prompt to output in a specific format and then the parser,
+
+277
+00:17:53,280 --> 00:17:57,800
+pauses that output to store the data in a Python dictionary or
+
+278
+00:17:57,800 --> 00:18:02,040
+some other data structure that makes it easy for downstream processing.
+
+279
+00:18:02,040 --> 00:18:06,080
+I hope you find this useful in many of your applications.
+
+280
+00:18:06,080 --> 00:18:10,400
+And with that, let's go into the next video where we'll see how
+
+281
+00:18:10,400 --> 00:18:16,400
+Lanchain can help you build better chatbots or have an LLM have more effective chats,
+
+282
+00:18:16,400 --> 00:18:36,400
+by better managing what it remembers from the conversation you've had so far.
+
+

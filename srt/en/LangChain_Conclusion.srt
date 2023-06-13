@@ -1,0 +1,93 @@
+1
+00:00:00,000 --> 00:00:10,600
+In this short course, you saw a range of applications, including processing customer reviews and
+
+2
+00:00:10,600 --> 00:00:16,840
+building an application to answer questions over documents, and even using an llm to decide
+
+3
+00:00:16,840 --> 00:00:22,080
+when to make a call to an external tool like web search to answer complex questions.
+
+4
+00:00:22,080 --> 00:00:26,400
+If a week or two ago, someone had asked you how much work would it be to build all of
+
+5
+00:00:26,400 --> 00:00:30,800
+these applications, I think a lot of people thought, boy, this sounds like weeks, maybe
+
+6
+00:00:30,800 --> 00:00:32,200
+even longer of work.
+
+7
+00:00:32,200 --> 00:00:36,640
+But you saw in this short course how with just a pretty reasonable number of lines of
+
+8
+00:00:36,640 --> 00:00:41,600
+code, you can use Langtrain to build all of these applications pretty efficiently.
+
+9
+00:00:41,600 --> 00:00:45,600
+As I hope you take these ideas, maybe you can take some code snippets that you saw in
+
+10
+00:00:45,600 --> 00:00:49,120
+the Jupyter notebooks and use them in your own applications.
+
+11
+00:00:49,120 --> 00:00:51,320
+And these ideas are really just the start.
+
+12
+00:00:51,320 --> 00:00:54,920
+There's a lot of other applications that you can use language models for.
+
+13
+00:00:54,920 --> 00:00:59,680
+These models are so powerful because they're applicable to such a wide range of tasks,
+
+14
+00:00:59,680 --> 00:01:06,600
+whether it be answering questions about CSVs, querying SQL databases, interacting with APIs.
+
+15
+00:01:06,600 --> 00:01:11,740
+There's a lot of different examples of using chains and the combinations of prompts and
+
+16
+00:01:11,740 --> 00:01:16,040
+output parsers and then more chains to do all these things in Langtrain.
+
+17
+00:01:16,040 --> 00:01:18,200
+And most of that is due to the Langtrain community.
+
+18
+00:01:18,200 --> 00:01:22,360
+So I want to also give a really big thank you to everyone in the community who's contributed,
+
+19
+00:01:22,360 --> 00:01:26,560
+whether it be improvements in the documentation, making it easier for others to get started,
+
+20
+00:01:26,560 --> 00:01:30,360
+or new types of chains, opening up a whole new world of possibilities.
+
+21
+00:01:30,360 --> 00:01:35,560
+And so with that, if you have not yet already done so, I hope you go to your laptop, your
+
+22
+00:01:35,560 --> 00:01:38,720
+desktop and run pip install Langtrain.
+
+23
+00:01:38,720 --> 00:01:54,000
+And then go use this too to go build some amazing applications.
+
+
