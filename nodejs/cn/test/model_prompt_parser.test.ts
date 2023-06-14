@@ -4,7 +4,7 @@ import {
     customer_email,
     email_style,
     firstPrompt,
-} from '../src/model_prompt_parser/prompt';
+} from '../src/model_prompt_parser/promptOpenAI';
 import {getCompletion} from '../src/util/openai';
 import {getLangChainChat} from '../src/util/langchain';
 import {promptGen} from '../src/model_prompt_parser/promptTemplate';

@@ -2,7 +2,7 @@ import { OpenAI } from "langchain/llms/openai";
 
 
 const token = process.env.VITE_OPENAI_TOKEN;
-const modelOpenAI = new OpenAI(
+export const modelOpenAI = new OpenAI(
     {
         openAIApiKey: token,
         temperature:0.9
