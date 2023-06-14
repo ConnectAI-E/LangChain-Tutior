@@ -1,14 +1,12 @@
 import {ConversationSummaryMemory} from 'langchain/memory';
-import {ConversationChain, LLMChain} from 'langchain/chains';
+import {ConversationChain} from 'langchain/chains';
 import {modelOpenAI} from '../util/langchain';
-import {PromptTemplate} from 'langchain';
 import {ChatOpenAI} from 'langchain/chat_models';
 
 const summaryMemory = new ConversationSummaryMemory({
     memoryKey: 'chat_history',
     llm: new ChatOpenAI({ modelName: "gpt-3.5-turbo", temperature: 0,openAIApiKey:process.env.VITE_OPENAI_TOKEN, }),
 });
-
 
 
 const chain = new ConversationChain({ llm: modelOpenAI, memory: summaryMemory });
