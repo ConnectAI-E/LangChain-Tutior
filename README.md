@@ -1,6 +1,6 @@
 
 <div align="center">
-	<a href='https://learn.deeplearning.ai/chatgpt-prompt-eng/lesson/1/introduction' target="_blank" rel="noopener noreferrer">
+	<a href='https://learn.deeplearning.ai/langchain/lesson/1/introduction' target="_blank" rel="noopener noreferrer">
 	<img src="https://user-images.githubusercontent.com/110169811/245044407-3f1de2a3-d089-42b0-8af7-ab2454b293e3.png" width="800" >
 	</a>
 </div>
