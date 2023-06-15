@@ -3,6 +3,7 @@ import {getCompletion} from '../src/util/openai';
 import { llmChainTry_call, llmChainTry_run} from '../src/chain/llmChain';
 import {simpleSequentialChain} from '../src/chain/simpleSequentialChain';
 import {sequentialChain} from '../src/chain/sequentialChain';
+import {default_try, math_try, physics_try} from '../src/chain/routerChain';
 
 
 test('base OpenAI api', async () => {
@@ -33,6 +34,21 @@ describe('sequential chain',async () => {
 
     it('common',async () => {
         await sequentialChain()
+    })
+
+})
+
+describe('router chain',async () => {
+    it('physics', async() => {
+        await physics_try()
+    })
+
+    it('math',async () => {
+        await math_try()
+    })
+
+    it('other',async () => {
+        await default_try()
     })
 
 })
