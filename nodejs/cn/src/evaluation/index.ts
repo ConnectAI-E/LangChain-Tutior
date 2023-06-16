@@ -116,7 +116,9 @@ export const autoEvaluation = async () => {
 
 // Looks like we cannot specify a doc separator in JS
     let retrevalChain = RetrievalQAChain.fromLLM(llm, vectorStore.asRetriever());
+    // run from array of examples
     let predictions = await retrevalChain.apply(examples);
+    console.log(predictions);
 
     // / Now let's build our own evaluator
     let template2 = 'You are evaluating the results of a student Q&A session.\n ' +
