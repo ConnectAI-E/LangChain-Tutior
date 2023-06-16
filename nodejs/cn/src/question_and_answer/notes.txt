@@ -1,0 +1,145 @@
+LLM's on documents
+------------------
+
+To combine LLMs with documents the issue is LLMs can only review a few
+thousand words at a time, generally this is not sufficient for a large
+document or data set.
+
+To overcome this limitation there are two key components that help us:
+
+Embeddings
+----------
+
+Embeddings turn text into numerical representations of the texts semantics, such
+that text snippets with similar content result in similar vectors. It is these
+numerical values that get placed into the vector store.
+
+TXT  -> chunk -> Embedding -> [-0.003530, -0.010379, ..., 0.005863]
+                                         /
+										/
+									   /
+									  /
+- Embedding vector captures content/meaning
+- Text with similar vectors have similar meaning
+
+Example:
+
+1) My dog Rover likes to chase squirrels.
+2) Fluffy, my cat, refuses to eat from a can.
+3) The Chevy Bolt accelerates to 60 mph in 6.7 seconds.
+
+
+1) -> Embedding -> [-0.003530, -0.010379, ..., 0.005863]
+														\
+														 \__ Very similar
+														 /
+														/
+2) -> Embedding -> [-0.003540, -0.010369, ..., 0.005265]
+														\
+														 \__ Dissimilar
+														 /
+														/
+3) -> Embedding -> [-0.603530, -0.040329, ..., 0.705863]
+														Compare
+
+This allows us to locate similar text and pass only that to the LLM
+
+Vector Database
+---------------
+	Create							Vector Database
+							______________________________________________
+	 chunk -> Embedding -> | [-0.003530, -0.010379, ..., 0.005863], chunk |
+	/chunk -> Embedding -> | [-0.003540, -0.010369, ..., 0.005265], chunk |
+TEXT  ...   			   |											  |
+TEXT  ...				   |											  |
+TEXT  ...				   |											  |
+TEXT  ...				   |											  |
+	\ ...				   |											  |
+	 chunk -> Embedding -> | [-0.603530, -0.040329, ..., 0.705863], chunk |
+	 						-----------------------------------------------
+										embedding vectors          original
+																	chunks
+
+This db stores the vector representations, the incoming document is broken into
+smaller chunks, each then gets and embedding vector, this and the chunk are
+stored in the database.
+
+When a query comes in we can use this to match queries to vectors. When a query
+arrives the embedding generates vectors for the query and the vector database is
+used to match the most similar vectors to the query.
+
+				Index
+						______________________________________________
+                    /  | [-0.003530, -0.010379, ..., 0.005863], chunk |
+                   /   | [-0.003540, -0.010369, ..., 0.005265], chunk | -> similar
+            	  /	   |	...										  |
+query -> embedding	   |	...										  |
+            	  \	   |	...										  |
+                   \   |	...										  |
+                    \  | [-0.603530, -0.040329, ..., 0.705863], chunk | -> similar
+						-----------------------------------------------
+
+Once this is done the selected chunks based on the vectors can be sent to the LLM.
+
+	Process with LLM
+
+				n most similar -> LLM -> completion
+
+The n most similar values are likely to fit the LLMs context size.
+
+Retrievers
+----------
+It is possible to use the Vector Store itself to return a subset of the documents
+to send to the LLM. There are different approaches these can take and you can use
+options to the retrieval Chain to change how the chain works.
+
+Stuff method
+
+	Docs + prompt -> LLM -> Final answer
+
+	Stuffing is the simplest approach, you simply stuff all the data into the
+	prompt context to pass to the LLM.
+
+	Pros:	It makes a single call and the LLM has access to all of the data at once.
+	Cons:	LLMs have a context length and large documents or many documents will be too large.
+
+Map reduce
+		  chunk -> LLM \
+		/ chunk -> LLM  \
+	Docs   ...			  LLM -> Final answer
+		\  ...          /
+		  chunk -> LLM /
+
+	In the map reduce approach the documents are broken into chunks, each chunk
+	goes to an LLM then all of the results are collated by a final LLM call.
+
+	Pros:	Fast to process and scales well to any number/size of documents
+	Cons:	Takes multiple calls, and each chunk is dealt with as an independent
+			document, so this may not work for all types of document.
+
+Refine
+		  chunk -> LLM \
+		/ chunk ------> LLM
+	Docs   ...		      \
+		\  ...             \
+		  chunk ----------> LLM -> Final answer
+
+	When refining each chunk goes to the LLM as does the output of any prior
+	chunks until the final chunk is processed giving the result.
+
+	Pros:	This is good for building up an answer over time.
+	Cons: 	This takes almost as many calls as Map reduce and as they are
+			sequential it can be slow.
+
+Map rerank
+		  chunk -> LLM -> 40 |
+		/ chunk -> LLM -> 91 |
+	Docs   ...			  	 |-> select highest score -> Final answer
+		\  ...               |
+		  chunk -> LLM -> 33 |
+
+	This is like map reduce but uses scores to pick the result. You need to
+	let the LLM know how to score.
+
+	Pros:	Fast to process and scales well.
+	Cons:	This does use a lot of LLM calls.
