@@ -28,3 +28,14 @@
 | NodeJS | <a href="./nodejs/cn/readme.md">中✅</a>、<a href="./nodejs/en/readme.md">英❌</a>                                                                      
 | Golang | <a href="#">中❌</a>、<a href="./golang/en/guidelines.go">英❌</a>                                                                                      |
 | 字幕     | <a href="./srt/en">中✅</a>、<a href="./srt/en">英✅</a>                                                                                                
+
+## 靠谱的学习资料
+
+**[langchain JS 文档](https://js.langchain.com/docs/api/tools/classes/BingSerpAPI)**
+
+**[langchain Python 文档](https://python.langchain.com/)**
+
+**[langchain 概念介绍](https://docs.langchain.com/docs/)**
+
+**[awesome langchain 资源集合](https://github.com/kyrolabs/awesome-langchain)**
+
