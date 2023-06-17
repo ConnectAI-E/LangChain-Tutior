@@ -25,7 +25,7 @@
 |:-------|:---------------------------------------------------------------------------------------------------------------------------------------------------|
 | 教学视频   | <a href="https://www.bilibili.com/video/BV1jh4y1X7cq">中✅</a>、<a href="https://learn.deeplearning.ai/chatgpt-prompt-eng/lesson/2/guidelines">英✅</a> |
 | Python | <a href="./python/en/readme.md">中✅</a>、<a href="./python/en/readme.md">英✅</a>                                                                      |
-| NodeJS | <a href="./nodejs/cn/readme.md">中✅</a>、<a href="./nodejs/en/readme.md">英❌</a>                                                                      
+| NodeJS | <a href="./nodejs/cn/readme.md">中✅</a>、<a href="./nodejs/en/readme.md">英✅</a>                                                                      
 | Golang | <a href="#">中❌</a>、<a href="./golang/en/guidelines.go">英❌</a>                                                                                      |
 | 字幕     | <a href="./srt/en">中✅</a>、<a href="./srt/en">英✅</a>                                                                                                
 
