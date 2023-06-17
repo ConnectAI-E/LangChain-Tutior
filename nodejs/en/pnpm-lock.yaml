@@ -19,7 +19,8 @@ specifiers:
   figlet: ^1.5.2
   hnswlib-node: ^1.4.2
   inquirer: ^9.1.4
-  langchain: ^0.0.92
+  langchain: ^0.0.94
+  node-fetch: ^3.3.1
   openai: ^3.2.1
   prettier: ^2.8.3
   typescript: ^4.9.5
@@ -34,7 +35,8 @@ dependencies:
   dotenv: 16.1.4
   figlet: 1.6.0
   inquirer: 9.2.7
-  langchain: 0.0.92_kvlejqnb4mo3rynbuvwx44hi6y
+  langchain: 0.0.94_kvlejqnb4mo3rynbuvwx44hi6y
+  node-fetch: 3.3.1
   openai: 3.2.1
   vite: 4.3.9_@types+node@18.16.17
 
@@ -375,6 +377,10 @@ packages:
     dependencies:
       '@types/node': 18.16.17
     dev: true
+
+  /@types/uuid/9.0.2:
+    resolution: {integrity: sha512-kNnC1GFBLuhImSnV7w4njQkUiJi0ZXUycu1rUaouPqiKlXkh77JKgdRnTAp1x5eBwcIwbtI+3otwzuIDEuDoxQ==}
+    dev: false
 
   /@typescript-eslint/eslint-plugin/5.59.9_kigkzfftsmftz3xok324pyvzui:
     resolution: {integrity: sha512-4uQIBq1ffXd2YvF7MAvehWKW3zVv/w+mSfRAu+8cKbfj3nwzyqJLNcZJpQ/WZ1HLbJDiowwmQ6NO+63nCA+fqA==}
@@ -742,6 +748,11 @@ packages:
     engines: {node: '>=6'}
     dev: true
 
+  /camelcase/6.3.0:
+    resolution: {integrity: sha512-Gmy6FhYlCY7uOElZUSbxo2UCDH8owEk996gkbrpsgGtrJLM3J7jGxl9Ic7Qwwj4ivOE5AWZWRMecDdF7hqGjFA==}
+    engines: {node: '>=10'}
+    dev: false
+
   /chai/4.3.7:
     resolution: {integrity: sha512-HLnAzZ2iupm25PlN0xFreAlBA5zaBSv3og0DdeGA4Ar6h6rJ3A0rolRUKJhSF2V10GZKDgWF/VmAEsNWjCRB+A==}
     engines: {node: '>=4'}
@@ -862,6 +873,11 @@ packages:
       rw: 1.3.3
     dev: false
 
+  /data-uri-to-buffer/4.0.1:
+    resolution: {integrity: sha512-0R9ikRb668HB7QDxT1vkpuUBtqc53YyAwMwGeUFKRojY/NWKvdZ+9UYtRfGmhqNbRkTSVpMbmyhXipFFv2cb/A==}
+    engines: {node: '>= 12'}
+    dev: false
+
   /debug/3.2.7:
     resolution: {integrity: sha512-CFjzYYAi4ThfiQvizrFQevTTXHtnCqWfe7x1AhgEscTz6ZbLbfoLRLPugTQyBth6f8ZERVUSyWHFD/7Wu4t1XQ==}
     peerDependencies:
@@ -884,6 +900,11 @@ packages:
     dependencies:
       ms: 2.1.2
     dev: true
+
+  /decamelize/5.0.1:
+    resolution: {integrity: sha512-VfxadyCECXgQlkoEAjeghAr5gY3Hf+IKjKb+X8tGVDtveCjN+USwprd2q3QXBR9T1+x2DG0XZF5/w+7HAtSaXA==}
+    engines: {node: '>=10'}
+    dev: false
 
   /deep-eql/4.1.3:
     resolution: {integrity: sha512-WaEtAOpRA1MQ0eohqZjpGD8zdI0Ovsm8mmFhaDN8dvDZzyoUMcYDnf5Y6iu7HTXxf8JDS23qWa4a+hKCDyOPzw==}
@@ -1393,6 +1414,14 @@ packages:
       reusify: 1.0.4
     dev: true
 
+  /fetch-blob/3.2.0:
+    resolution: {integrity: sha512-7yAQpD2UMJzLi1Dqv7qFYnPbaPx7ZfFK6PiIxQ4PfkGPyNyl2Ugx+a/umUonmKqjhM4DnfbMvdX6otXq83soQQ==}
+    engines: {node: ^12.20 || >= 14.13}
+    dependencies:
+      node-domexception: 1.0.0
+      web-streams-polyfill: 3.2.1
+    dev: false
+
   /figlet/1.6.0:
     resolution: {integrity: sha512-31EQGhCEITv6+hi2ORRPyn3bulaV9Fl4xOdR169cBzH/n1UqcxsiSB/noo6SJdD7Kfb1Ljit+IgR1USvF/XbdA==}
     engines: {node: '>= 0.4.0'}
@@ -1472,6 +1501,13 @@ packages:
       asynckit: 0.4.0
       combined-stream: 1.0.8
       mime-types: 2.1.35
+    dev: false
+
+  /formdata-polyfill/4.0.10:
+    resolution: {integrity: sha512-buewHzMvYL29jdeQTVILecSaZKnt/RJWjoZCF5OW60Z67/GmSLBkOFM7qh1PI3zFNtJbaZL5eQu1vLfazOwj4g==}
+    engines: {node: '>=12.20.0'}
+    dependencies:
+      fetch-blob: 3.2.0
     dev: false
 
   /fs.realpath/1.0.0:
@@ -1899,8 +1935,8 @@ packages:
     engines: {node: '>=0.10.0'}
     dev: false
 
-  /langchain/0.0.92_kvlejqnb4mo3rynbuvwx44hi6y:
-    resolution: {integrity: sha512-77528kXJu9C391qV1a5jDzZLEjIblq/VtpH7xd4BwavgvhRmeSXR9WkrHHmih/Phpae4Ss3dtb7pcyd78rp/YA==}
+  /langchain/0.0.94_kvlejqnb4mo3rynbuvwx44hi6y:
+    resolution: {integrity: sha512-RafU2Nk005jnNgOPSi5LhXtwOhdf8nwLSWU4hRyMXwB1l3lNCwTKlYWfKwMQ9VaSEe+4fEaO8lM9yVp+y3aa9w==}
     engines: {node: '>=18'}
     peerDependencies:
       '@aws-sdk/client-dynamodb': ^3.310.0
@@ -1911,6 +1947,7 @@ packages:
       '@getmetal/metal-sdk': '*'
       '@getzep/zep-js': ^0.3.1
       '@gomomento/sdk': ^1.23.0
+      '@google-cloud/storage': ^6.10.1
       '@huggingface/inference': ^1.5.1
       '@opensearch-project/opensearch': '*'
       '@pinecone-database/pinecone': '*'
@@ -1965,6 +2002,8 @@ packages:
       '@getzep/zep-js':
         optional: true
       '@gomomento/sdk':
+        optional: true
+      '@google-cloud/storage':
         optional: true
       '@huggingface/inference':
         optional: true
@@ -2046,15 +2085,18 @@ packages:
       '@anthropic-ai/sdk': 0.4.4
       ansi-styles: 5.2.0
       binary-extensions: 2.2.0
+      camelcase: 6.3.0
       d3-dsv: 3.0.1
+      decamelize: 5.0.1
       expr-eval: 2.0.2
       flat: 5.0.2
       hnswlib-node: 1.4.2
       js-tiktoken: 1.0.6
       jsonpointer: 5.0.1
+      langchainplus-sdk: 0.0.11
       ml-distance: 4.0.1
       object-hash: 3.0.0
-      openai: 3.2.1
+      openai: 3.3.0
       p-queue: 6.6.2
       p-retry: 4.6.2
       uuid: 9.0.0
@@ -2064,6 +2106,17 @@ packages:
     transitivePeerDependencies:
       - debug
       - encoding
+    dev: false
+
+  /langchainplus-sdk/0.0.11:
+    resolution: {integrity: sha512-bEovYVJZq88LYznDfK+ohNVd0lqQ1DMgE/A/8ZkqsiyaRuEjvIQj4PLc0VQ8htWPBljrfTu8oS7g+SGWYTZfNw==}
+    hasBin: true
+    dependencies:
+      '@types/uuid': 9.0.2
+      commander: 10.0.1
+      p-queue: 6.6.2
+      p-retry: 4.6.2
+      uuid: 9.0.0
     dev: false
 
   /levn/0.4.1:
@@ -2224,6 +2277,11 @@ packages:
   /node-addon-api/6.1.0:
     resolution: {integrity: sha512-+eawOlIgy680F0kBzPUNFhMZGtJ1YmqM6l4+Crf4IkImjYrO/mqPwRMh352g23uIaQKFItcQ64I7KMaJxHgAVA==}
 
+  /node-domexception/1.0.0:
+    resolution: {integrity: sha512-/jKZoMpw0F8GRwl4/eLROPA3cfcXtLApP0QzLmUT/HuPCZWyB7IY9ZrMeKw2O/nFIqPQB3PVM9aYm0F312AXDQ==}
+    engines: {node: '>=10.5.0'}
+    dev: false
+
   /node-fetch/2.6.11:
     resolution: {integrity: sha512-4I6pdBY1EthSqDmJkiNk3JIT8cswwR9nfeW/cPdUagJYEQG7R95WRH74wpz7ma8Gh/9dI9FP+OU+0E4FvtA55w==}
     engines: {node: 4.x || >=6.0.0}
@@ -2234,6 +2292,15 @@ packages:
         optional: true
     dependencies:
       whatwg-url: 5.0.0
+    dev: false
+
+  /node-fetch/3.3.1:
+    resolution: {integrity: sha512-cRVc/kyto/7E5shrWca1Wsea4y6tL9iYJE5FBCius3JQfb/4P4I295PfhgbJQBLTx6lATE4z+wK0rPM4VS2uow==}
+    engines: {node: ^12.20.0 || ^14.13.1 || >=16.0.0}
+    dependencies:
+      data-uri-to-buffer: 4.0.1
+      fetch-blob: 3.2.0
+      formdata-polyfill: 4.0.10
     dev: false
 
   /num-sort/2.1.0:
@@ -2289,6 +2356,15 @@ packages:
 
   /openai/3.2.1:
     resolution: {integrity: sha512-762C9BNlJPbjjlWZi4WYK9iM2tAVAv0uUp1UmI34vb0CN5T2mjB/qM6RYBmNKMh/dN9fC+bxqPwWJZUTWW052A==}
+    dependencies:
+      axios: 0.26.1
+      form-data: 4.0.0
+    transitivePeerDependencies:
+      - debug
+    dev: false
+
+  /openai/3.3.0:
+    resolution: {integrity: sha512-uqxI/Au+aPRnsaQRe8CojU0eCR7I0mBiKjD3sNMzY6DaC1ZVrc85u98mtJW6voDug8fgGN+DIZmTDxTthxb7dQ==}
     dependencies:
       axios: 0.26.1
       form-data: 4.0.0
@@ -2989,6 +3065,11 @@ packages:
     resolution: {integrity: sha512-XHPEwS0q6TaxcvG85+8EYkbiCux2XtWG2mkc47Ng2A77BQu9+DqIOJldST4HgPkuea7dvKSj5VgX3P1d4rW8Tg==}
     dependencies:
       defaults: 1.0.4
+    dev: false
+
+  /web-streams-polyfill/3.2.1:
+    resolution: {integrity: sha512-e0MO3wdXWKrLbL0DgGnUV7WHVuw9OUvL4hjgnPkIeEvESk74gAITi5G606JtZPp39cd8HA9VQzCIvA49LpPN5Q==}
+    engines: {node: '>= 8'}
     dev: false
 
   /webidl-conversions/3.0.1:

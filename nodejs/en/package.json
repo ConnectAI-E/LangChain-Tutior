@@ -16,7 +16,8 @@
     "dotenv": "^16.0.3",
     "figlet": "^1.5.2",
     "inquirer": "^9.1.4",
-    "langchain": "^0.0.92",
+    "langchain": "^0.0.94",
+    "node-fetch": "^3.3.1",
     "openai": "^3.2.1",
     "vite": "^4.3.9"
   },
