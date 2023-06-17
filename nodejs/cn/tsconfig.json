@@ -1,0 +1,14 @@
+{
+    "compilerOptions": {
+        "outDir": "bin",
+        "strict": true,
+        "target": "es2017",
+        "module": "commonjs",
+        "sourceMap": true,
+        "esModuleInterop": true,
+        "moduleResolution": "node",
+        "allowSyntheticDefaultImports": true,
+        "types": ["vitest/globals"]
+    },
+    "include": ["src/**/*", "test/**/*"]
+}
