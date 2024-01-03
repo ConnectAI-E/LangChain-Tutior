@@ -35,6 +35,8 @@
 
 **[langchain Python 文档](https://python.langchain.com/)**
 
+**[langchain Golang Example](https://github.com/tmc/langchaingo/blob/e498d12eb400ce61aafd37bd8aa4257f2370011a/examples/openai-function-call-example/openai_function_call_example.go)**
+
 **[langchain 概念介绍](https://docs.langchain.com/docs/)**
 
 **[awesome langchain 资源集合](https://github.com/kyrolabs/awesome-langchain)**
